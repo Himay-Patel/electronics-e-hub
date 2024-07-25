@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    /* card css for latest products */
+    .card::before {
+        @apply content-none absolute top-0 left-0 w-full h-full bg-e_hub_orange;
+
+        /* transition: 0.5s ease-in-out; */
+    }
+
+    .container .card:before {
+        content: '';
+        clip-path: circle(150px at 80% 20%);
+        transition: 0.5s ease-in-out;
+    }
+
+    .container .card:hover:before {
+
+        clip-path: circle(300px at 80% -20%);
+    }
+
+    .container .card:hover .imgbox {
+        top: 0;
+        transform: translateY(10%);
+    }
+
+    .container .card:hover .contentbox {
+        height: 190px;
+    }
+
+    .container .card:hover .contentbox .price {
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0.5s;
+    }
+
+    .container .card:hover .contentbox .color {
+
+        opacity: 1;
+
+        visibility: visible;
+
+        transition-delay: 0.6s;
+
+    }
+
+    .container .card .contentbox .price span:hover {
+        background-color: #ff7f00;
+        color: #fff;
+    }
+
+    .container .card:hover .contentbox a {
+
+        opacity: 1;
+
+        transform: translateY(0px);
+
+        transition-delay: 0.75s;
+
+    }
+    /* loading css */
+    .dot-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .dot {
+        height: 12px;
+        width: 12px;
+        margin-right: 10px;
+        border-radius: 10px;
+        background-color: #fff;
+        animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    .dot:last-child {
+        margin-right: 0;
+    }
+
+    .dot:nth-child(1) {
+        animation-delay: -0.3s;
+    }
+
+    .dot:nth-child(2) {
+        animation-delay: -0.1s;
+    }
+
+    .dot:nth-child(3) {
+        animation-delay: 0.1s;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(0.8);
+            background-color: #ffc58a;
+            box-shadow: 0 0 0 0 rgba(247, 209, 151, 0.7);
+        }
+
+        50% {
+            transform: scale(1.2);
+            background-color: #dc8c3b;
+            box-shadow: 0 0 0 10px rgba(247, 209, 151, 0);
+        }
+
+        100% {
+            transform: scale(0.8);
+            background-color: #ff8c19;
+            box-shadow: 0 0 0 0 rgba(247, 209, 151, 0.7);
+        }
+    }
+}
