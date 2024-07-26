@@ -20,7 +20,7 @@ interface OTPFormInputs {
 const OTPPage: React.FC = () => {
     const [errMsg, setErrMsg] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+    const inputRefs = useRef<HTMLInputElement[]>([]);
 
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
@@ -129,7 +129,7 @@ const OTPPage: React.FC = () => {
                                             required: "OTP is required"
                                         })}
                                         className={`bg-e_hub_white h-16 border border-e_hub_black text-e_hub_black outline-none text-xl px-4 py-3 placeholder:text-e_hub_light_gray w-1/5 rounded-lg text-center`}
-                                        ref={(el) => (inputRefs.current[index] = el)}
+                                        ref={(el) => { if(el) inputRefs.current[index] = el }}
                                         onChange={(e) => handleInputChange(e, index)}
                                         onKeyDown={(e) => handleKeyDown(e, index)}
                                         aria-invalid={errors[`otp${index + 1}` as keyof OTPFormInputs] ? 'true' : 'false'}
