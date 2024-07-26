@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import profile_icon from "../../public/profile.png";
 import cart_icon from "../../public/cart.png";
 import Link from 'next/link';
@@ -14,20 +14,32 @@ const NavIcons = () => {
 
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const profileDropdownRef = useRef<HTMLDivElement>(null);
 
     const user = useAppSelector(state => state.user);
     const dispatch = useAppDispatch();
 
-    const router = useRouter();
-    // temp
-    const isLoggedIn = false;
-
     const handleProfile = () => {
-        if (!isLoggedIn) {
-            router.push("/login");
-        }
         setIsProfileOpen((prev) => !prev);
     };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
+                setIsProfileOpen(false);
+            }
+        };
+
+        if (isProfileOpen) {
+            document.addEventListener('click', handleClickOutside);
+        } else {
+            document.removeEventListener('click', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [isProfileOpen]);
 
     const handleLogout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
@@ -48,14 +60,14 @@ const NavIcons = () => {
 
     return (
         <div className='flex items-center gap-8 xl:gap-6 relative'>
-            <Image src={profile_icon} alt='' width={45} height={45} className='cursor-pointer' onClick={handleProfile} />
+            <Image src={user.imageUrl ? user.imageUrl : profile_icon} alt='' width={45} height={45} className='cursor-pointer rounded-full' onClick={handleProfile} />
             {
                 isProfileOpen && (
-                    <div className='absolute p-4 rounded-md top-12 right-14 gap-5 text-lg shadow-[0_3px_10px_rgb(0,0,0,0.4)] bg-e_hub_gray z-20 flex flex-col justify-between items-center'>
-                        <Link href="#profile">{user._id && user.email && user.username ? user.username : "Profile"}</Link>
+                    <div ref={profileDropdownRef} className='absolute p-4 rounded-md top-12 right-14 gap-5 text-lg shadow-[0_3px_10px_rgb(0,0,0,0.4)] bg-e_hub_gray z-20 flex flex-col justify-between items-center'>
+                        <Link href={(user._id && user.email && user.username) ? '/' : '/login'}>{user._id && user.email && user.username ? user.username : "Login"}</Link>
                         <Link href="#profile">My Orders</Link>
                         <Link href="#profile">cancellection</Link>
-                        <button onClick={handleLogout}>Logout</button>
+                        {(user._id && user.email && user.username) && <button onClick={handleLogout}>Logout</button>}
                     </div>
                 )
             }

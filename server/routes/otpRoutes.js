@@ -5,6 +5,6 @@ import { generate, verify } from '../controllers/otpController.js';
 const router = express.Router();
 
 router.route('/generate').post(authMiddleware, generate);
-router.route('/verify').post(authMiddleware, verify);
+router.route('/verify/:slug').post(authMiddleware, verify);
 
 export default router

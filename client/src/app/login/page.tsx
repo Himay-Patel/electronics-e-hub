@@ -49,8 +49,8 @@ const LoginPage: React.FC = () => {
     // add try catch hear
     try {
       const response = await axios.post(process.env.API_URL + "/api/user/login", data, { withCredentials: true });
-      await axios.post(process.env.API_URL + "/api/otp/generate", {}, { withCredentials: true });
-      router.push('/otp');
+      await axios.post(process.env.API_URL + "/api/otp/generate", { isLogin: true }, { withCredentials: true });
+      router.push('/otp/login');
     } catch (err: AxiosError | any) {
       console.log(err);
       setErrMsg(err.response.data.message);

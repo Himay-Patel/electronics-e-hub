@@ -13,6 +13,10 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "demo-vue-electric01.storehippo.com"
             },
+            {
+                protocol: "https",
+                hostname: "icon-library.com"
+            }
         ]
     }
 };

@@ -3,9 +3,9 @@ import type { RootState } from '@/lib/redux/store'
 
 interface UserState {
     _id: string | null
-    email: String | null
-    username: String | null
-    imageUrl: String | null
+    email: string | null
+    username: string | null
+    imageUrl: string | null
 }
 
 let initialUser: UserState = {

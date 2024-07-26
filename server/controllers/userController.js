@@ -96,6 +96,7 @@ const resetPassword = async (req, res) => {
         return res.clearCookie('token').status(200).json({ message: "Password reset successfully" });
     } catch (err) {
         console.log(err);
+        res.status(500).json({ message: "Server error" });
     }
 }
 

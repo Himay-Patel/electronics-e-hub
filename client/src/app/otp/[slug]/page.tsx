@@ -2,11 +2,11 @@
 import Image from 'next/image';
 import React, { useState, useRef, useEffect, use, LegacyRef } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import logo from '../../../public/logo.png';
-import Loading from "../../components/Loading";
+import logo from '../../../../public/logo.png';
+import Loading from "../../../components/Loading";
 import axios, { AxiosError } from 'axios';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { setUser } from '@/lib/redux/features/userSlice';
 import { Toaster, toast } from 'sonner';
 
@@ -26,6 +26,7 @@ const OTPPage: React.FC = () => {
     const user = useAppSelector((state) => state.user);
 
     const router = useRouter();
+    const { slug } = useParams();
 
     useEffect(() => {
         if (user._id && user.username && user.email) {
@@ -34,13 +35,13 @@ const OTPPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if(errMsg.length > 0) {
+        if (errMsg.length > 0) {
             toast.error(errMsg);
         }
         return () => {
             setErrMsg('');
         }
-    },[errMsg]);
+    }, [errMsg]);
 
     const {
         register,
@@ -56,18 +57,22 @@ const OTPPage: React.FC = () => {
         //try catch
         try {
             const otp = Number.parseInt(data.otp1 + data.otp2 + data.otp3 + data.otp4);
-            const response = await axios.post(process.env.API_URL + "/api/otp/verify", { otp }, { withCredentials: true });
-            localStorage.setItem("user", JSON.stringify(response.data.user));
-            dispatch(setUser({
-                _id: response.data.user._id,
-                username: response.data.user.username,
-                email: response.data.user.email,
-                imageUrl: response.data.user.imageUrl
-            }));
-            router.push('/');
+            const response = await axios.post(process.env.API_URL + "/api/otp/verify/" + slug, { otp }, { withCredentials: true });
+            if (slug === 'login') {
+                localStorage.setItem("user", JSON.stringify(response.data.user));
+                dispatch(setUser({
+                    _id: response.data.user._id,
+                    username: response.data.user.username,
+                    email: response.data.user.email,
+                    imageUrl: response.data.user.imageUrl
+                }));
+                router.push('/');
+            } else {
+                router.push("/change-password");
+            }
         } catch (err: AxiosError | any) {
             console.log(err);
-            if(err.response.status === 401) {
+            if (err.response.status === 401) {
                 setErrMsg("OTP Expired");
             } else {
                 setErrMsg(err.response.data.message);
