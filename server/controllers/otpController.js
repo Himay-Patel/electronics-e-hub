@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import Otp from '../models/otpModel.js'
 import generateOtp from '../utils/generateOtp.js';
 import sendEmail from '../utils/sendEmail.js';
-import generateJwtToken from '../utils/generateJWTToken.js';
+import generateJwtToken from '../utils/generateJwtToken.js'
 import cookieOptions from '../utils/cookieOptions.js';
 
 const generate = async (req, res) => {

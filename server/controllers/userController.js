@@ -1,5 +1,5 @@
 import User from '../models/userModel.js';
-import generateJwtToken from '../utils/generateJWTToken.js';
+import generateJwtToken from '../utils/generateJwtToken.js';
 import cookieOptions from '../utils/cookieOptions.js';
 import mongoose from 'mongoose';
 
