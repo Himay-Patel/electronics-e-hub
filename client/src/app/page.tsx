@@ -1,9 +1,10 @@
+'use client'
 import Cards from '@/components/Card'
 import Marquee from '@/components/Marquee'
 import ProductList from '@/components/ProductList'
 import Slider_Products from '@/components/Slider'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import banner from "../../public/banner.jpg"
 import Link from 'next/link'
 import TrendingProducts from '@/components/TrendingProducts'
@@ -11,8 +12,20 @@ import TrendingProductsSection from '@/components/TrendingProductsSection'
 import HeroSection from '@/components/HeroSection'
 import CategoriesList from '@/components/CategoriesList'
 import BlogSection from '@/components/BlogSection'
+import axios from 'axios'
+import { setProducts } from '@/lib/redux/features/productSlice'
+import { useAppDispatch } from '@/lib/redux/hooks'
 
 const Homepage = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    axios.get(process.env.API_URL + "/api/product")
+    .then((response) => {
+      dispatch(setProducts(response.data));
+    }).catch((err) => {
+      console.log(err);
+    })
+  }, []);
   return (
     <div className=''>
       <Slider_Products />
