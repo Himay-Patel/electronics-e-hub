@@ -15,16 +15,26 @@ import BlogSection from '@/components/BlogSection'
 import axios from 'axios'
 import { setProducts } from '@/lib/redux/features/productSlice'
 import { useAppDispatch } from '@/lib/redux/hooks'
+import { setCategories } from '@/lib/redux/features/categorySlice'
 
 const Homepage = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
+    // Fetch Categories
+    axios.get(process.env.API_URL + '/api/category')
+    .then(response => {
+      dispatch(setCategories(response.data));
+    })
+    .catch(err => {
+      console.log(err);
+    });
+    // Fetch Products
     axios.get(process.env.API_URL + "/api/product")
     .then((response) => {
       dispatch(setProducts(response.data));
     }).catch((err) => {
       console.log(err);
-    })
+    });
   }, []);
   return (
     <div className=''>

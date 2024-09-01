@@ -1,12 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from '@/lib/redux/features/userSlice'
 import productReducer from '@/lib/redux/features/productSlice'
+import categoryReducer from '@/lib/redux/features/categorySlice'
+import filterReducer from '@/lib/redux/features/filterSlice'
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       user: userReducer,
-      products: productReducer
+      products: productReducer,
+      categories: categoryReducer,
+      filter: filterReducer
     }
   })
 }

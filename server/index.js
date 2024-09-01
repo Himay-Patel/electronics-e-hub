@@ -6,13 +6,14 @@ import userRoutes from './routes/userRoutes.js';
 import otpRoutes from './routes/otpRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
-import os from 'node:os'
-import cluster from 'node:cluster'
+import os from 'node:os';
+import cluster from 'node:cluster';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 if(os.platform() === "win32") {
     cluster.schedulingPolicy = cluster.SCHED_RR;
 }
-
 
 if (cluster.isPrimary) {
     for (let i = 0; i < os.availableParallelism(); i++) {
@@ -24,6 +25,11 @@ if (cluster.isPrimary) {
         origin: process.env.CLIENT_URL,
         credentials: true,
     };
+
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+
+    app.use(express.static(path.join(__dirname, 'public')));
 
     connectDB();
     app.use(express.json());

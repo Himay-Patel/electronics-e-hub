@@ -3,25 +3,37 @@ import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import { SlArrowRight, SlArrowLeft } from "react-icons/sl";
 import Link from 'next/link';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { setFilter } from '@/lib/redux/features/filterSlice';
 
 const CategoriesList = () => {
     const [isClient, setIsClient] = useState(false);
+    const dispatch = useAppDispatch();
+    const selectedCategory = useAppSelector(state => state.filter.value);
+    const categories = useAppSelector(state => state.categories.categories);
+
+    // const [selectedCategory, setSelectedCategory] = useState<string>("");
 
     useEffect(() => {
         setIsClient(true);
     }, []);
 
-    const categories = [
-        { id: 1, imageUrl: '/categories_img/1.png', name: 'Phones', link: '/list?cat=test' },
-        { id: 2, imageUrl: '/categories_img/2.png', name: 'Watches', link: '/list?cat=test' },
-        { id: 3, imageUrl: '/categories_img/3.png', name: 'Headphones', link: '/list?cat=test' },
-        { id: 4, imageUrl: '/categories_img/4.png', name: 'Laptops', link: '/list?cat=test' },
-        { id: 5, imageUrl: '/categories_img/5.png', name: 'Cameras', link: '/list?cat=test' },
-        { id: 6, imageUrl: '/categories_img/6.png', name: 'A/C', link: '/list?cat=test' },
-        { id: 7, imageUrl: '/categories_img/7.png', name: 'Refrigerators', link: '/list?cat=test' },
-        { id: 8, imageUrl: '/categories_img/8.png', name: 'Television', link: '/list?cat=test' },
-        { id: 9, imageUrl: '/categories_img/9.png', name: 'H/T', link: '/list?cat=test' },
-    ];
+    const handleSelectedCategory = (category: string) => {
+        dispatch(setFilter(category));
+    }
+
+    // const categories = [
+    //     { id: 1, imageUrl: '/categories_img/1.png', name: 'Phones', link: '/list?cat=test' },
+    //     { id: 2, imageUrl: '/categories_img/2.png', name: 'Watches', link: '/list?cat=test' },
+    //     { id: 3, imageUrl: '/categories_img/3.png', name: 'Headphones', link: '/list?cat=test' },
+    //     { id: 4, imageUrl: '/categories_img/4.png', name: 'Laptops', link: '/list?cat=test' },
+    //     { id: 5, imageUrl: '/categories_img/5.png', name: 'Cameras', link: '/list?cat=test' },
+    //     { id: 6, imageUrl: '/categories_img/6.png', name: 'A/C', link: '/list?cat=test' },
+    //     { id: 7, imageUrl: '/categories_img/7.png', name: 'Refrigerators', link: '/list?cat=test' },
+    //     { id: 8, imageUrl: '/categories_img/8.png', name: 'Television', link: '/list?cat=test' },
+    //     { id: 9, imageUrl: '/categories_img/9.png', name: 'H/T', link: '/list?cat=test' },
+    // ];
+
 
     // Define NextArrow component
     const NextArrow = (props: any) => {
@@ -90,13 +102,13 @@ const CategoriesList = () => {
             {isClient && (
                 <Slider {...settings}>
                     {categories.map((category) => (
-                        <div key={category.id} className="px-1">
-                            <Link href={category.link}>
-                                <div className="ring-2 p-3 m-5 ring-black rounded-full flex flex-col justify-center items-center">
+                        <div key={category._id} className="px-1">
+                            <div>
+                                <div className={`ring-2 p-3 m-5 ring-black rounded-full flex flex-col justify-center items-center hover:cursor-pointer ${selectedCategory === category.name ? "bg-slate-400 hover:bg-slate-400" : "hover:bg-slate-200"}`} onClick={(e) => {handleSelectedCategory(category.name)}}>
                                     <img src={category.imageUrl} alt={category.name} className="w-16 h-16 object-cover" />
                                     <p className="text-center py-2">{category.name}</p>
                                 </div>
-                            </Link>
+                            </div>
                         </div>
                     ))}
                 </Slider>

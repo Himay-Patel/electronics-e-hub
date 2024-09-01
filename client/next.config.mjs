@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        API_URL: "http://localhost:3001",
+        API_URL: "http://192.168.0.5:3001",
     },
     images: {
         remotePatterns: [
@@ -16,6 +16,10 @@ const nextConfig = {
             {
                 protocol: "https",
                 hostname: "icon-library.com"
+            },
+            {
+                protocol: "http",
+                hostname: "localhost"
             }
         ]
     }
