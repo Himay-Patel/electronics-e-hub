@@ -99,10 +99,10 @@ const AllProductsPage = () => {
               {products.map((product, index) => (
                 <tr key={product._id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{index + 1}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.name}</td>
+                  <td className="px-6 py-4 whitespace-pre-wrap text-sm text-gray-500">{product.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.price.toString()}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.description}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.category.name}</td>
+                  <td className="px-6 py-4 whitespace-pre-wrap text-sm text-gray-500">{product.description}</td>
+                  <td className="px-6 py-4 whitespace-pre-wrap text-sm text-gray-500">{product.category.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.company}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.quantityAvailable.toString()}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.color}</td>
