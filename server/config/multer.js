@@ -7,7 +7,7 @@ const configStorage = (destination) => {
             cb(null, `./public${destination}`);
         },
         filename: function (req, file, cb) {
-            cb(null, file.originalname + Date.now() + path.extname(file.originalname));
+            cb(null, path.parse(file.originalname).name + Date.now() + path.extname(file.originalname));
         }
     });
 
