@@ -42,8 +42,8 @@ const Menu = () => {
                         <Link href="/">Home</Link>
                         <Link href="#shop">Shop</Link>
                         <Link href="#search">Search</Link>
-                        <Link href="#about">About</Link>
-                        <Link href="#contact">Contact</Link>
+                        <Link href="/about">About</Link>
+                        <Link href="/contact">Contact</Link>
                         <Link href="#profile">{user._id && user.email && user.username ? user.username : "Profile"}</Link>
                         <button onClick={handleLogout}>Logout</button>
                         <Link href="#cart">Cart(0)</Link>

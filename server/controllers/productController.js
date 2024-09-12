@@ -41,7 +41,6 @@ const addProduct = async (req, res) => {
 
 const getProductById = async (req, res) => {
     try {
-        console.log(req.params);
         const product = await Product.findById(req.params._id, '-__v -createdAt -updatedAt').populate({ path: 'category', select: "_id name"})
         if (!product) {
             res.status(404).json({ message: "Product not found" });

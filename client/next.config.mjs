@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        API_URL: "http://192.168.0.5:3001",
+        API_URL: "https://white-wood-21807.pktriot.net",
     },
     images: {
         remotePatterns: [

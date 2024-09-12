@@ -58,21 +58,25 @@ const Footer = () => {
               <div className='text-2xl tracking-widest'>E-hub</div>
             </Link>
             <p>
-              B-201, ABC Plaza, PQR road, Opp. xyz bank, Ahmedabad 320008, Gujarat, India
+              123 E-Hub Street, City, Country
             </p>
-            <span className='font-semibold'>electronicehub123@gmail.com</span>
-            <span className='font-semibold'>+91 xxxx xxxx xx</span>
+            <Link href="mailto:electronicehub123@gmail.com" className="text-e_hub_white hover:underline">
+              electronicehub123@gmail.com
+            </Link>
+            <Link href="tel:+1234567890" className="text-e_hub_white hover:underline">
+              +91 xxxx xxxx xx
+            </Link>
           </div>
           {/* center */}
           <div className="hidden lg:flex justify-between w-1/2">
             <div className="flex flex-col justify-between">
               <h1 className='font-medium text-lg uppercase'>company</h1>
               <div className="flex flex-col gap-6 capitalize">
-                <Link href="#">about us</Link>
-                <Link href="#">careers</Link>
+                <Link href="/about">about us</Link>
                 <Link href="#">affiliates</Link>
                 <Link href="/blog">blog</Link>
-                <Link href="#">contact us</Link>
+                <Link href="#">careers</Link>
+                <Link href="/contact">contact us</Link>
               </div>
             </div>
 
