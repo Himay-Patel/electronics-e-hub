@@ -6,6 +6,10 @@ const nextConfig = {
     images: {
         remotePatterns: [
             {
+                protocol: 'https',
+                hostname: 'white-wood-21807.pktriot.net',
+            },
+            {
                 protocol: "https",
                 hostname: "i.ibb.co"
             },

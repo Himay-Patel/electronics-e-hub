@@ -15,8 +15,8 @@ interface Product {
   description: string,
   quantityAvailable: Number
   category: {
-      _id: string,
-      name: string
+    _id: string,
+    name: string
   }
   images: string[]
   company: string
@@ -114,23 +114,20 @@ const AllProductsPage = () => {
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex gap-2">
-                      <div className="flex items-center justify-center bg-e_hub_graywhite rounded-md py-2 px-4">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleUpdate(product._id)}
+                        className="flex items-center gap-2 justify-center bg-e_hub_graywhite rounded-md py-2 px-4 text-blue-600 hover:text-blue-900 mr-4">
                         <PencilIcon className="w-5 h-5" />
-                        <button
-                          onClick={() => handleUpdate(product._id)}
-                          className="text-blue-600 hover:text-blue-900 mr-4">
-                          Update
-                        </button>
-                      </div>
-                      <div className="flex items-center justify-center bg-e_hub_graywhite rounded-md py-2 px-4">
+                        Update
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(product._id)}
+                        className="flex items-center gap-2 justify-center bg-e_hub_graywhite rounded-md py-2 px-4 text-red-600 hover:text-red-900">
                         <TrashIcon className="w-5 h-5" />
-                        <button
-                          onClick={() => handleDelete(product._id)}
-                          className="text-red-600 hover:text-red-900">
-                          Delete
-                        </button>
-                      </div>
+                        Delete
+                      </button>
                     </div>
                   </td>
                 </tr>

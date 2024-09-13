@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDownIcon, PlusIcon, ListBulletIcon, ShoppingBagIcon, UserCircleIcon, HomeIcon, CubeIcon, ChartPieIcon } from '@heroicons/react/24/solid';
+import { ChevronDownIcon, PlusIcon, ListBulletIcon, ShoppingBagIcon, UserCircleIcon, HomeIcon, CubeIcon, ChartPieIcon, TagIcon } from '@heroicons/react/24/solid';
 
 const Sidebar = () => {
     const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
@@ -49,6 +49,12 @@ const Sidebar = () => {
                             </li>
                         </ul>
                     )}
+                </li>
+                <li>
+                    <Link href="/categories" className="flex items-center p-4 hover:bg-e_hub_gray">
+                        <TagIcon className="w-5 h-5 mr-2" />
+                        <span>Categories</span>
+                    </Link>
                 </li>
                 <li>
                     <Link href="/orders" className="flex items-center p-4 hover:bg-e_hub_gray">
