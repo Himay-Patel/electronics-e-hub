@@ -56,18 +56,24 @@ const RegisterPage: React.FC = () => {
     // add try catch hear
     try {
       const response = await axios.post(process.env.API_URL + "/api/user/register", data, { withCredentials: true });
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      const cartResponse = await axios.post(process.env.API_URL + '/api/cart/generate', {}, {
+        withCredentials: true,
+      });
+      localStorage.setItem("user", JSON.stringify(cartResponse.data.user));
       dispatch(setUser({
-        _id: response.data.user._id,
-        username: response.data.user.username,
-        email: response.data.user.email,
-        imageUrl: response.data.user.imageUrl
+        _id: cartResponse.data.user._id,
+        username: cartResponse.data.user.username,
+        email: cartResponse.data.user.email,
+        imageUrl: cartResponse.data.user.imageUrl,
+        cartId: cartResponse.data.user.cartId
       }));
       router.push('/');
     } catch (err: AxiosError | any) {
       console.log(err);
       if (err.response.status === 400) {
         setErrMsg(err.response.data.message);
+      } else if (err.response.status === 401) {
+        setErrMsg("Token exipred");
       }
     } finally {
       setIsSubmitting(false);

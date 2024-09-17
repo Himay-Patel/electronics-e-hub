@@ -3,6 +3,7 @@ import userReducer from '@/lib/redux/features/userSlice'
 import productReducer from '@/lib/redux/features/productSlice'
 import categoryReducer from '@/lib/redux/features/categorySlice'
 import filterReducer from '@/lib/redux/features/filterSlice'
+import cartReducer from '@/lib/redux/features/cartSlice'
 
 export const makeStore = () => {
   return configureStore({
@@ -10,7 +11,8 @@ export const makeStore = () => {
       user: userReducer,
       products: productReducer,
       categories: categoryReducer,
-      filter: filterReducer
+      filter: filterReducer,
+      cart: cartReducer
     }
   })
 }

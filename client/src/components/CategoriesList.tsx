@@ -101,7 +101,7 @@ const CategoriesList = () => {
         <>
             {isClient && (
                 <Slider {...settings}>
-                    {categories.map((category) => (
+                    {/* {categories.map((category) => (
                         <div key={category._id} className="px-1">
                             <div>
                                 <div className={`ring-2 p-3 m-5 ring-black rounded-full flex flex-col justify-center items-center hover:cursor-pointer ${selectedCategory === category.name ? "bg-slate-400 hover:bg-slate-400" : "hover:bg-slate-200"}`} onClick={(e) => {handleSelectedCategory(category.name)}}>
@@ -110,7 +110,18 @@ const CategoriesList = () => {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    ))} */}
+                    {categories.map((category) => <div key={category._id} className="flex mt-5 flex-col items-center text-center min-w-[80px] md:min-w-[100px] lg:min-w-[120px]" onClick={() => { handleSelectedCategory(category.name) }}>
+                                <div className={`p-3 rounded-full flex flex-col items-center gap-2`}>
+                                    <img
+                                        src={category.imageUrl}
+                                        alt={category.name}
+                                        className={`size-16 md:size-20 lg:size-24 rounded-full cursor-pointer transition-transform transform hover:scale-105 ${selectedCategory === category.name ? "ring-2 ring-e_hub_black" : ""}`}
+                                    />
+                                    <p className="mt-2 text-sm md:text-base font-medium">{category.name}</p>
+                                </div>
+                            </div>
+                        )}
                 </Slider>
             )}
         </>

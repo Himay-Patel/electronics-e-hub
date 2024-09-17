@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { useParams, useRouter } from 'next/navigation';
 import { setUser } from '@/lib/redux/features/userSlice';
 import { Toaster, toast } from 'sonner';
+import { initiate } from '@/lib/redux/features/cartSlice';
 
 interface OTPFormInputs {
     otp1: string;
@@ -24,6 +25,7 @@ const OTPPage: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const user = useAppSelector((state) => state.user);
+    const cart = useAppSelector(state => state.cart);
 
     const router = useRouter();
     const { slug } = useParams();
@@ -43,6 +45,12 @@ const OTPPage: React.FC = () => {
         }
     }, [errMsg]);
 
+    useEffect(() => {
+        if(cart.items.length > 0) {
+            sessionStorage.setItem('cart', JSON.stringify(cart));
+        }
+    }, [cart]);
+
     const {
         register,
         handleSubmit,
@@ -59,12 +67,20 @@ const OTPPage: React.FC = () => {
             const otp = Number.parseInt(data.otp1 + data.otp2 + data.otp3 + data.otp4);
             const response = await axios.post(process.env.API_URL + "/api/otp/verify/" + slug, { otp }, { withCredentials: true });
             if (slug === 'login') {
-                localStorage.setItem("user", JSON.stringify(response.data.user));
+                const { user } = response.data;
+                const { cart } = user;
+                localStorage.setItem("user", JSON.stringify(user));
                 dispatch(setUser({
-                    _id: response.data.user._id,
-                    username: response.data.user.username,
-                    email: response.data.user.email,
-                    imageUrl: response.data.user.imageUrl
+                    _id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    imageUrl: user.imageUrl,
+                    cartId: cart._id
+                }));
+                dispatch(initiate({
+                    items: cart.items,
+                    total: cart.total,
+                    totalItems: cart.totalItems
                 }));
                 router.push('/');
             } else {

@@ -6,6 +6,7 @@ interface UserState {
     email: string | null
     username: string | null
     imageUrl: string | null
+    cartId: string | null
 }
 
 let initialUser: UserState = {
@@ -13,6 +14,7 @@ let initialUser: UserState = {
     email: null,
     username: null,
     imageUrl: null,
+    cartId: null,
 }
 
 if(typeof window !== "undefined") {
@@ -22,6 +24,7 @@ if(typeof window !== "undefined") {
         initialUser.username = user.username;
         initialUser.email = user.email;
         initialUser.imageUrl = user.imageUrl;
+        initialUser.cartId = user.cartId;
     }
 }
 
@@ -30,6 +33,7 @@ const initialState: UserState = {
     email: initialUser.email,
     username: initialUser.username,
     imageUrl: initialUser.imageUrl,
+    cartId: initialUser.cartId,
 }
 
 export const userSlice = createSlice({
@@ -41,6 +45,7 @@ export const userSlice = createSlice({
             state.email = action.payload.email;
             state.username = action.payload.username;
             state.imageUrl = action.payload.imageUrl;
+            state.cartId = action.payload.cartId;
         }
     },
 })

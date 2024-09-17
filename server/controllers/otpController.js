@@ -4,6 +4,7 @@ import generateOtp from '../utils/generateOtp.js';
 import sendEmail from '../utils/sendEmail.js';
 import generateJwtToken from '../utils/generateJwtToken.js'
 import cookieOptions from '../utils/cookieOptions.js';
+import Cart from '../models/cartModel.js';
 
 const generate = async (req, res) => {
     const user = req.user;
@@ -37,13 +38,20 @@ const verify = async (req, res) => {
         } else {
             await Otp.deleteOne({ user: userId, otp });
             if(req.params.slug === "login") {
+                const cart = await Cart.findOne({ userId }).select("_id totalAmount cartItems");
                 return res.cookie("token", generateJwtToken(user._id, user.username, user.email), cookieOptions).status(200).json({ 
                     message: "OTP verified successfully",
                     user: {
                         _id: user._id,
                         username: user.username,
                         email: user.email,
-                        imageUrl: user.imageUrl
+                        imageUrl: user.imageUrl,
+                        cart: {
+                            _id: cart._id,
+                            total: cart.totalAmount,
+                            items: cart.cartItems,
+                            totalItems: cart.cartItems.reduce((sum, item) => sum + item.quantity, 0)
+                        }
                     }
                 });
             } else {

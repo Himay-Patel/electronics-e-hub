@@ -1,19 +1,44 @@
 'use client'
-import { useAppSelector } from '@/lib/redux/hooks'
+import { increaseQuantityOrAdd } from '@/lib/redux/features/cartSlice'
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
+import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
 // import products from "../../public/data/products";
 
 const ProductList = () => {
+    const dispath = useAppDispatch();
     const filterValue = useAppSelector(state => state.filter.value);
+    const cart = useAppSelector(state => state.cart);
+    const user = useAppSelector(state => state.user);
     const products = useAppSelector(state => state.products.products)!.filter(product => {
         return filterValue.length > 0 ? product.category.name.toLowerCase() === filterValue.toLowerCase() : product;
     });
-    
+
     useEffect(() => {
-        console.log(products);
-    }, [products]);
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+        let timer = setTimeout(() => {
+          if (user._id) {
+            axios.post(process.env.API_URL + '/api/cart/modify', {
+              cartId: user.cartId,
+              cartItems: cart.items,
+              cartTotal: cart.total
+            }, {
+              withCredentials: true
+            })
+              .then(response => {
+                console.log(response.data);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+        }, 1500);
+        return () => {
+          clearTimeout(timer);
+        }
+      }, [cart]);
     
     return (
         <div className='mt-12 overflow-x-auto items-center justify-center'>
@@ -46,7 +71,20 @@ const ProductList = () => {
                             <span className='font-semibold'>₹{product.price.toString()}</span>
                         </div>
                         <div className="text-sm text-e_hub_gray">{product.description}</div>
-                        <button className='rounded-md ring-2 ring-e_hub_orange text-e_hub_orange w-max py-2 px-4 text-sm font-bold hover:bg-e_hub_orange hover:text-e_hub_white'>
+                        <button onClick={(e) => {
+                            e.preventDefault();
+                            dispath(increaseQuantityOrAdd({
+                                _id: product._id,
+                                name: product.name,
+                                price: product.price as number,
+                                description: product.description,
+                                images: product.images,
+                                category: product.category,
+                                company: product.company,
+                                color: product.color,
+                                quantity: 1
+                            }));
+                        }} className='rounded-md ring-2 ring-e_hub_orange text-e_hub_orange w-max py-2 px-4 text-sm font-bold hover:bg-e_hub_orange hover:text-e_hub_white'>
                             Add to cart
                         </button>
                     </Link>

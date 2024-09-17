@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import menu_icon from "../../public/menu.png"
 import Image from "next/image";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import axios from "axios";
 import { setUser } from "@/lib/redux/features/userSlice";
+import { initiate } from "@/lib/redux/features/cartSlice";
 
 
 const Menu = () => {
@@ -14,20 +15,31 @@ const Menu = () => {
     const [open, setOpen] = useState(false);
 
     const user = useAppSelector(state => state.user);
+    const cart = useAppSelector(state => state.cart);
     const dispatch = useAppDispatch();
+
+    // useEffect(() => {
+    //     sessionStorage.setItem('cart', JSON.stringify(cart));
+    // }, [cart]);
 
     const handleLogout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         try {
             const response = await axios.post(process.env.API_URL + "/api/user/logout", null, { withCredentials: true });
-            console.log(response);
             localStorage.removeItem('user');
             dispatch(setUser({
                 _id: null,
                 email: null,
                 username: null,
-                imageUrl: null
+                imageUrl: null,
+                cartId: null
             }));
+            dispatch(initiate({
+                items: [],
+                total: 0,
+                totalItems: 0
+            }));
+            sessionStorage.removeItem('cart');
         } catch (err) {
             console.log(err);
         }
@@ -46,7 +58,7 @@ const Menu = () => {
                         <Link href="/contact">Contact</Link>
                         <Link href="#profile">{user._id && user.email && user.username ? user.username : "Profile"}</Link>
                         <button onClick={handleLogout}>Logout</button>
-                        <Link href="#cart">Cart(0)</Link>
+                        <Link href="/cart">Cart</Link>
                     </div>
                 )
             }
