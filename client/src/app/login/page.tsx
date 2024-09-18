@@ -6,7 +6,7 @@ import logo from '../../../public/logo.png';
 import Link from 'next/link';
 import Loading from "../../components/Loading"
 import axios, { AxiosError } from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppSelector } from '@/lib/redux/hooks';
 import { Toaster, toast } from 'sonner'
 
@@ -16,6 +16,7 @@ interface LoginFormInputs {
 }
 
 const LoginPage: React.FC = () => {
+  const next = useSearchParams().get('next');
   const [errMsg, setErrMsg] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -50,7 +51,11 @@ const LoginPage: React.FC = () => {
     try {
       const response = await axios.post(process.env.API_URL + "/api/user/login", data, { withCredentials: true });
       await axios.post(process.env.API_URL + "/api/otp/generate", { isLogin: true }, { withCredentials: true });
-      router.push('/otp/login');
+      if(!next) {
+        router.push('/otp/login');
+      } else {
+        router.push(`/otp/login?next=${next}`);
+      }
     } catch (err: AxiosError | any) {
       console.log(err);
       setErrMsg(err.response.data.message);

@@ -76,6 +76,12 @@ export const cartSlice = createSlice({
                 state.totalItems -= product.quantity;
                 state.total -= product.quantity * product.price;
             }
+        },
+        add(state, action:PayloadAction<Product>) {
+            const product = action.payload;
+            state.items.push(product);
+            state.totalItems += product.quantity;
+            state.total += product.price * product.quantity;
         }
     }
 });

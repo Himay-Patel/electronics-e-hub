@@ -34,7 +34,7 @@ const ProductList = () => {
                 console.log(err);
               });
           }
-        }, 1500);
+        }, 1200);
         return () => {
           clearTimeout(timer);
         }

@@ -1,15 +1,17 @@
 "use client"
-import { increaseQuantityOrAdd, decreaseQuantityOrDelete, remove } from '@/lib/redux/features/cartSlice'
+import { increaseQuantityOrAdd, decreaseQuantityOrDelete, remove, initiate } from '@/lib/redux/features/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import Image from 'next/image'
 import React, { useEffect } from 'react'
+import { useRouter } from 'next/navigation';
 
 const CartPage = () => {
     const user = useAppSelector(state => state.user);
     const [hydrated, setHydrated] = React.useState(false);
     const cart = useAppSelector(state => state.cart);
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     useEffect(() => {
         setHydrated(true);
@@ -33,11 +35,35 @@ const CartPage = () => {
                         console.log(err);
                     });
             }
-        }, 1500);
+        }, 1200);
         return () => {
             clearTimeout(timer);
         }
     }, [cart]);
+
+    const handleCheckout = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        try {
+            const orderResponse = await axios.post(process.env.API_URL + "/api/order/generate", {
+                totalAmount: cart.total * 1.01,
+                products: cart.items
+            }, {
+                withCredentials: true
+            });
+            dispatch(initiate({
+                items: [],
+                total: 0,
+                totalItems: 0
+            }));
+            router.push('/');
+        } catch (err: AxiosError | any) {
+            const { data, status, statusText } = err.response;
+            console.log(data, status, statusText);
+            if(status === 401) {
+                router.replace('/login?next=cart');
+            }
+        }
+    }
 
     if (!hydrated) {
         // Returns null on first render, so the client and server match
@@ -278,7 +304,10 @@ const CartPage = () => {
                                     <dd className="text-base font-bold text-gray-900">&#x20b9; {cart.total + cart.total * 0.01}</dd>
                                 </dl>
                             </div>
-                            <button className="flex w-full items-center justify-center rounded-lg bg-e_hub_orange px-5 py-2.5 text-sm font-medium text-white">Proceed to Checkout</button>
+                            <button className="flex w-full items-center justify-center rounded-lg bg-e_hub_orange px-5 py-2.5 text-sm font-medium text-white" onClick={handleCheckout}>
+                                {/* Proceed to Checkout */}
+                                Place order
+                            </button>
                         </div>
                     </div>
                 </div>

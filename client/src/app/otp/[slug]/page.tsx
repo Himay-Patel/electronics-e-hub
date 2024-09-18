@@ -6,10 +6,10 @@ import logo from '../../../../public/logo.png';
 import Loading from "../../../components/Loading";
 import axios, { AxiosError } from 'axios';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { setUser } from '@/lib/redux/features/userSlice';
 import { Toaster, toast } from 'sonner';
-import { initiate } from '@/lib/redux/features/cartSlice';
+import { increaseQuantityOrAdd, initiate } from '@/lib/redux/features/cartSlice';
 
 interface OTPFormInputs {
     otp1: string;
@@ -19,6 +19,7 @@ interface OTPFormInputs {
 }
 
 const OTPPage: React.FC = () => {
+    const next = useSearchParams().get('next');
     const [errMsg, setErrMsg] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const inputRefs = useRef<HTMLInputElement[]>([]);
@@ -77,12 +78,24 @@ const OTPPage: React.FC = () => {
                     imageUrl: user.imageUrl,
                     cartId: cart._id
                 }));
-                dispatch(initiate({
-                    items: cart.items,
-                    total: cart.total,
-                    totalItems: cart.totalItems
-                }));
-                router.push('/');
+                cart.items.forEach((item: any) => {
+                    dispatch(increaseQuantityOrAdd({
+                        _id: item._id,
+                        name: item.name,
+                        price: item.price,
+                        description: item.description,
+                        quantity: item.quantity,
+                        images: item.images,
+                        category: item.category,
+                        company: item.company,
+                        color: item.color
+                    }));
+                })
+                if(!next) {
+                    router.push('/');
+                } else {
+                    router.push('/' + next)
+                }
             } else {
                 router.push("/change-password");
             }
