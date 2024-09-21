@@ -146,7 +146,7 @@ const CheckoutPage = () => {
       .catch(err => {
         const { status, data, statusText } = err.response;
         if (status === 401) {
-          router.push('/login');
+          router.push('/login?next=cart');
         }
       })
   }, []);
