@@ -3,7 +3,7 @@ import React from 'react';
 import img1 from '../../../public/products/samrtwatch.png';
 import backgroundImg from '../../../public/img-1.png';
 import Filter from '@/components/Filter';
-import ProductList2 from '@/components/AllProducts';
+import AllProducts from '@/components/AllProducts';
 
 const Listpage = () => {
   return (
@@ -23,7 +23,7 @@ const Listpage = () => {
       {/* <Filter /> */}
       {/* products */}
       <h1 className='mt-12 text-xl font-semibold'>All Products For You!</h1>
-      <ProductList2/>
+      <AllProducts/>
     </div>
   );
 };

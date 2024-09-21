@@ -4,10 +4,37 @@ import fs from 'node:fs';
 
 const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find({}, '-__v -createdAt -updatedAt').populate({path: 'category', select: "_id name"});
+        const products = await Product.find({}, '-__v -createdAt -updatedAt').populate({ path: 'category', select: "_id name" });
         res.status(200).json(products);
     } catch (err) {
         console.log(err);
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+const getTrendingProducts = async (req, res) => {
+    try {
+        const trendingProducts = await Product.aggregate([
+            {
+                $sample: { size: 5 }
+            }
+        ]);
+        const populatedProducts = await Product.populate(trendingProducts, { path: 'category', select: '_id name' });
+
+        res.status(200).json(populatedProducts);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const getLastestProducts = async (req, res) => {
+    try {
+        const products = await Product.find({}, '-__v -createdAt -updatedAt').sort({ createdAt: -1 }).limit(3).populate({ path: 'category', select: "_id name" });
+
+        res.status(200).json(products);
+    } catch (err) {
+        console.error(err);
         res.status(500).json({ message: "Server error" });
     }
 }
@@ -41,7 +68,7 @@ const addProduct = async (req, res) => {
 
 const getProductById = async (req, res) => {
     try {
-        const product = await Product.findById(req.params._id, '-__v -createdAt -updatedAt').populate({ path: 'category', select: "_id name"})
+        const product = await Product.findById(req.params._id, '-__v -createdAt -updatedAt').populate({ path: 'category', select: "_id name" })
         if (!product) {
             res.status(404).json({ message: "Product not found" });
         } else {
@@ -109,10 +136,10 @@ const deleteProduct = async (req, res) => {
                 message: "Product deleted successfully",
             });
         }
-    } catch(err) {
+    } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Server error" });
     }
 }
 
-export { getAllProducts, addProduct, getProductById, updateProduct, deleteProduct }
+export { getAllProducts, getTrendingProducts, getLastestProducts, addProduct, getProductById, updateProduct, deleteProduct }

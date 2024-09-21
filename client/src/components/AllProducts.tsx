@@ -4,7 +4,7 @@ import ProductList from './ProductList';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { setFilter } from '@/lib/redux/features/filterSlice';
 
-const ProductList2 = () => {
+const AllProducts = () => {
 
     const [isClient, setIsClient] = useState(false);
     const dispatch = useAppDispatch();
@@ -34,7 +34,7 @@ const ProductList2 = () => {
                             </button>
                         )}
                     </div>
-                    <ProductList />
+                    <ProductList all="true" />
                 </div>
             )}
         </>
@@ -42,4 +42,4 @@ const ProductList2 = () => {
     );
 }
 
-export default ProductList2;
+export default AllProducts;

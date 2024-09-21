@@ -17,6 +17,7 @@ import { setProducts } from '@/lib/redux/features/productSlice'
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks'
 import { setCategories } from '@/lib/redux/features/categorySlice'
 import { initiate } from '@/lib/redux/features/cartSlice'
+import { setTrendingProducts } from '@/lib/redux/features/trendingproductSlice'
 
 const Homepage = () => {
   const cart = useAppSelector(state => state.cart);
@@ -35,6 +36,13 @@ const Homepage = () => {
     axios.get(process.env.API_URL + "/api/product")
       .then((response) => {
         dispatch(setProducts(response.data));
+      }).catch((err) => {
+        console.log(err);
+      });
+    // Fetch Trending Products
+    axios.get(process.env.API_URL + "/api/product/trending")
+      .then((response) => {
+        dispatch(setTrendingProducts(response.data));
       }).catch((err) => {
         console.log(err);
       });

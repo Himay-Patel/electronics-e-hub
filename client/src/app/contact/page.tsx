@@ -62,7 +62,7 @@ const ContactUsPage: React.FC = () => {
                                 <input
                                     id="name"
                                     type="text"
-                                    placeholder="John Doe"
+                                    placeholder="e-hub"
                                     {...register("name", {
                                         required: "Full Name is required"
                                     })}
