@@ -5,6 +5,11 @@ const orderSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
     },
+    address: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'addrresses',
+        required: true
+    },
     orderItems: [{
         _id: false,
         productId: {
@@ -19,6 +24,10 @@ const orderSchema = mongoose.Schema({
     }],
     totalAmount: {
         type: Number,
+        required: true
+    },
+    paymentMethod: {
+        type: String,
         required: true
     }
 }, {

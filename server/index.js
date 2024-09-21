@@ -8,6 +8,7 @@ import productRoutes from './routes/productRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+import addressRoutes from './routes/addressRoutes.js';
 import os from 'node:os';
 import cluster from 'node:cluster';
 import path, { dirname } from 'node:path';
@@ -45,6 +46,7 @@ if (cluster.isPrimary) {
     app.use("/api/category", categoryRoutes);
     app.use("/api/cart", cartRoutes);
     app.use("/api/order", orderRoutes);
+    app.use("/api/address", addressRoutes);
 
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {

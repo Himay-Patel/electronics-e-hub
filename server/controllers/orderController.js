@@ -19,7 +19,7 @@ const allOrders = async (req, res) => {
 const generateOrder = async (req, res) => {
     try {
         const user = req.user;
-        const { totalAmount, products } = req.body;
+        const { totalAmount, products, address, paymentMethod } = req.body;
         const orderItems = products.map(product => ({
             productId: product._id,
             quantity: product.quantity,
@@ -27,7 +27,9 @@ const generateOrder = async (req, res) => {
         const order = await Order.create({
             userId: new mongoose.Types.ObjectId(user._id),
             orderItems,
-            totalAmount
+            totalAmount,
+            address: new mongoose.Types.ObjectId(address),
+            paymentMethod
         });
         res.status(201).json(order);
     } catch(err) {

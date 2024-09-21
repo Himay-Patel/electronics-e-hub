@@ -31,18 +31,18 @@ const modify = async (req, res) => {
     try {
         const { cartId, cartItems, cartTotal } = req.body;
         const userId = req.user._id;
-        const cart = await Cart.findOne({ _id: new mongoose.Types.ObjectId(cartId) });
+        const cart = await Cart.findOneAndUpdate({ 
+            _id: new mongoose.Types.ObjectId(cartId) 
+        }, {
+            $set: {
+                cartItems,
+                totalAmount: cartTotal
+            }
+        });
         if (!cart) {
             return res.status(404).json({ message: 'Cart not found' });
         } else {
-            if (cart.userId.toString() !== userId.toString()) {
-                return res.status(403).json({ message: 'You are not authorized to modify this cart'});
-            } else {
-                cart.cartItems = cartItems;
-                cart.totalAmount = cartTotal;
-                await cart.save();
-                res.status(200).json({ message: 'Cart modified successfully' });
-            }
+            res.status(200).json({ message: 'Cart modified successfully' });
         }
     } catch(err) {
         console.log(err);
