@@ -16,9 +16,9 @@ const HeroSection = () => {
                             className="w-full h-auto rounded-md"
                         />
                     </div>
-                    <div className="col-8 col-md-5 absolute top-1/2 start-0 transform -translate-y-1/2 ps-2 ps-md-4 ms-lg-5">
+                    <div className="col-8 ml-5 xl:ml-7 col-md-5 absolute top-1/2 start-0 transform -translate-y-1/2 ps-2 ps-md-4 ms-lg-5">
                         <h3 className="text-e_hub_banner_text mb-2 md:mb-5 xl:mb-10 text-sm md:text-xl lg:text-2xl">New Offers</h3>
-                        <h2 className="text-e_hub_banner_text font-bold mb-3 md:mb-5 xl:mb-12 text-sm md:text-xl lg:text-3xl xl:text-5xl leading-normal">{`Up To 25% Discount Check it Out`}</h2>
+                        <h2 className="text-e_hub_banner_text font-bold mb-3 md:mb-5 xl:mb-12 text-sm md:text-xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-normal">{`Up To 25% Discount Check it Out`}</h2>
                         <Link href="/" className="m-10 p-0 px-3 md:px-4 lg:p-2 ring-2 ring-e_hub_banner_text text-sm md:text-xl rounded-sm text-e_hub_white hover:bg-e_hub_gray">Shop Now</Link>
                     </div>
                 </div>

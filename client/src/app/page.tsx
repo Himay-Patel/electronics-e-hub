@@ -51,7 +51,10 @@ const Homepage = () => {
         <CategoriesList />
       </div>
       <div className="mt-20 px-4 md:px-8 lg:px-16">
-        <h2 className='text-2xl'>Electronics Products</h2>
+        <div className="flex justify-between items-center">
+          <h2 className='text-2xl'>Electronics Products</h2>
+          <Link href='/list' className='text-blue-600 hover:text-blue-800'>All Products</Link>
+        </div>
         <ProductList />
       </div>
       <div className="mt-20 px-4 md:px-8 lg:px-16 w-full">

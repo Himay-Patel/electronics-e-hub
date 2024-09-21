@@ -45,20 +45,24 @@ const Menu = () => {
         }
     }
 
+    const handleLinkClick = () => {
+        setOpen(false);
+    };
+
     return (
         <div>
             <Image src={menu_icon} alt='menu_icon' width={25} height={25} className='cursor-pointer' onClick={() => setOpen((prev) => !prev)} />
             {
                 open && (
                     <div className='absolute w-full h-[calc(100vh-80px)] bg-e_hub_gray text-e_hub_white left-0 top-20 flex flex-col justify-center items-center gap-10 text-xl z-10 font-semibold'>
-                        <Link href="/">Home</Link>
-                        <Link href="#shop">Shop</Link>
-                        <Link href="#search">Search</Link>
-                        <Link href="/about">About</Link>
-                        <Link href="/contact">Contact</Link>
-                        <Link href="#profile">{user._id && user.email && user.username ? user.username : "Profile"}</Link>
+                        <Link href="/" onClick={handleLinkClick}>Home</Link>
+                        <Link href="/list" onClick={handleLinkClick}>Shop</Link>
+                        <Link href="#search" onClick={handleLinkClick}>Search</Link>
+                        <Link href="/about" onClick={handleLinkClick}>About</Link>
+                        <Link href="/contact" onClick={handleLinkClick}>Contact</Link>
+                        <Link href="#profile" onClick={handleLinkClick}>{user._id && user.email && user.username ? user.username : "Profile"}</Link>
+                        <Link href="/cart" onClick={handleLinkClick}>Cart</Link>
                         <button onClick={handleLogout}>Logout</button>
-                        <Link href="/cart">Cart</Link>
                     </div>
                 )
             }

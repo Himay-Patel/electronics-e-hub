@@ -12,7 +12,7 @@ const ProductList = () => {
     const filterValue = useAppSelector(state => state.filter.value);
     const cart = useAppSelector(state => state.cart);
     const user = useAppSelector(state => state.user);
-    const products = useAppSelector(state => state.products.products)!.filter(product => {
+    const products = useAppSelector(state => state.products.products.slice(0,40))!.filter(product => {
         return filterValue.length > 0 ? product.category.name.toLowerCase() === filterValue.toLowerCase() : product;
     });
 
