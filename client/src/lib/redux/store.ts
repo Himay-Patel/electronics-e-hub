@@ -5,6 +5,7 @@ import categoryReducer from '@/lib/redux/features/categorySlice'
 import filterReducer from '@/lib/redux/features/filterSlice'
 import cartReducer from '@/lib/redux/features/cartSlice'
 import trendingProductReducer from './features/trendingproductSlice'
+import latestproductReducer from './features/latestproductSlice'
 
 export const makeStore = () => {
   return configureStore({
@@ -12,6 +13,7 @@ export const makeStore = () => {
       user: userReducer,
       products: productReducer,
       trendinproducts: trendingProductReducer,
+      latestproducts: latestproductReducer,
       categories: categoryReducer,
       filter: filterReducer,
       cart: cartReducer

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import logo from '../../../public/logo.png';
-import { AxiosError } from 'axios';
 import { Toaster, toast } from 'sonner';
 import Loading from '../../components/Loading';
+import axios from 'axios';
 
 interface ContactFormInputs {
     name: string;
@@ -21,15 +21,33 @@ const ContactUsPage: React.FC = () => {
         register,
         handleSubmit,
         formState: { errors },
+        reset // Add this line to get the reset function
     } = useForm<ContactFormInputs>();
 
     const onSubmit: SubmitHandler<ContactFormInputs> = async (data) => {
         setIsSubmitting(true);
         try {
-            toast.success("Your message has been sent!");
-        } catch (err: AxiosError | any) {
+            const formData = {
+                name: data.name,
+                email: data.email,
+                message: data.message,
+                access_key: "f47620d1-9053-4432-9883-630075aff973"
+            };
+            const response = await axios.post("https://api.web3forms.com/submit", formData, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json"
+                }
+            });
+            if (response.data.success) {
+                toast.success("Your message has been sent!");
+                reset();
+            } else {
+                throw new Error(response.data.message || "Failed to send message. Please try again.");
+            }
+        } catch (err: any) {
             console.log(err);
-            setErrMsg(err.response?.data?.message || "Failed to send message. Please try again.");
+            setErrMsg(err.message || "Failed to send message. Please try again.");
         } finally {
             setIsSubmitting(false);
         }

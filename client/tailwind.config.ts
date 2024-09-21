@@ -17,6 +17,7 @@ const config: Config = {
         e_hub_orange: "#ff7f00",
         e_hub_banner_text: "#c6c6b6",
         e_hub_blue: "#92a2b2",
+        e_hub_graywhite: "#f2f2f2",
       },
       animation: {
         marquee: 'marquee 20s linear infinite',
