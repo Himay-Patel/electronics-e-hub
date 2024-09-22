@@ -53,7 +53,7 @@ const TrendingProducts = () => {
           <div className="w-full lg:w-1/2 overflow-x-auto justify-center items-center">
             <div className="flex gap-x-4 gap-y-16 flex-nowrap sm:flex-wrap m-2 justify-between items-center">
               {trendinproducts.map(product => (
-                <Link key={product._id} href="/test" className='w-full flex flex-col gap-4 sm:w-[45%] lg:w-[45%] min-w-[80%] sm:min-w-0'>
+                <Link key={product._id} href={`/product/${product._id}`} className='w-full flex flex-col gap-4 sm:w-[45%] lg:w-[45%] min-w-[80%] sm:min-w-0'>
                   <div className="relative w-full h-80">
                     <Image
                       src={product.images[0]}

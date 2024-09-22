@@ -1,21 +1,33 @@
-"use client"
-import React, { useState } from 'react'
+"use client";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const Add = () => {
-  const [quantity, setQuantity] = useState(1)
+const Add = ({ productId }: { productId: string }) => {
+  const [quantity, setQuantity] = useState(1);
+  const [stock, setStock] = useState<number | null>(null);
 
-  // tmp
-  const stock = 3
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`${process.env.API_URL}/api/product/${productId}`);
+        setStock(response.data.quantityAvailable);
+      } catch (error) {
+        console.error("Error fetching product data:", error);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
 
   const handleQuantity = (type: "decrease" | "increase") => {
     if (type === "decrease" && quantity > 1) {
       setQuantity((prev) => prev - 1);
     }
 
-    if (type === "increase" && quantity < stock) {
+    if (type === "increase" && stock !== null && quantity < stock) {
       setQuantity((prev) => prev + 1);
     }
-  }
+  };
 
   return (
     <div className='flex flex-col gap-4'>
@@ -27,12 +39,21 @@ const Add = () => {
             {quantity}
             <button className='cursor-pointer text-xl' onClick={() => handleQuantity("increase")}>+</button>
           </div>
-          <div className="text-xs">Only <span className='text-e_hub_orange'>3 items</span> left!<br /> {"Don't"}{" "} miss it</div>
+          {stock !== null && (
+            <div className="text-xs">
+              Only <span className='text-e_hub_orange'>{stock} items</span> left!<br />{"Don't"}{" "} miss it
+            </div>
+          )}
         </div>
-        <button className='w-36 text-sm font-bold rounded-md ring-2 ring-e_hub_orange text-e_hub_orange hover:bg-e_hub_orange hover:text-e_hub_white py-2 px-4 disabled:cursor-not-allowed disabled:bg-red-200 disabled:text-e_hub_black disabled:ring-none '>Add to Cart</button>
+        <button
+          className='w-36 text-sm font-bold rounded-md ring-2 ring-e_hub_orange text-e_hub_orange hover:bg-e_hub_orange hover:text-e_hub_white py-2 px-4 disabled:cursor-not-allowed disabled:bg-red-200 disabled:text-e_hub_black disabled:ring-none'
+          disabled={stock === null || quantity > stock}
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Add
+export default Add;
