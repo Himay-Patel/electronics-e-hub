@@ -12,7 +12,7 @@ const TrendingProducts = () => {
   const dispath = useAppDispatch();
   const cart = useAppSelector(state => state.cart);
   const user = useAppSelector(state => state.user);
-  const trendinproducts = useAppSelector(state => state.trendinproducts.trendingproducts);
+  const trendinproducts = useAppSelector(state => state.trendinproducts.trendingproducts.slice(0,5));
 
   useEffect(() => {
     sessionStorage.setItem('cart', JSON.stringify(cart));
