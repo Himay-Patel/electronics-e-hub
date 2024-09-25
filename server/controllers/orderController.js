@@ -15,6 +15,36 @@ const allOrders = async (req, res) => {
         res.status(500).send('Server Error');
     }
 }
+const totalSales = async (req,res)=> {
+    try {
+        const totalSale = await Order.aggregate([{$group : { _id: null, totalSales: { $sum: '$totalAmount' }}}])
+        return res.status(200).json({totalsale : totalSale[0].totalSales})
+    } catch (error) {
+        res.status(500).send("server error")
+    }
+}
+const salestat = async(req,res) => {
+    try {
+        const salestatic = await Order.aggregate([
+            {
+                $group: {
+                  _id: { year: { $year: "$createdAt" },
+                  month: { $month: "$createdAt" } },
+                  totalSales: { $sum: "$totalAmount" },
+                },
+              },
+              {
+                $sort: { "_id.year": -1, "_id.month": -1 }
+              },
+              {
+                $limit: 12
+              }
+        ])
+        return res.status(200).json(salestatic);
+    } catch (error) {
+        res.status(500).send("server error")
+    }
+}
 
 const generateOrder = async (req, res) => {
     try {
@@ -38,4 +68,4 @@ const generateOrder = async (req, res) => {
     }
 }
 
-export { allOrders, generateOrder }
+export { allOrders, generateOrder, totalSales, salestat }

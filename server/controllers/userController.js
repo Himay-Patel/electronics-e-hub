@@ -84,6 +84,17 @@ const initiateResetPassword = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 }
+const totalUser = async(req,res)=>{
+    
+    try {
+        const countUser = await User.countDocuments();
+        return res.status(200).json({ countUser});
+        console.log(countUser);
+        
+    } catch (error) {
+        return res.status(500).json({ message : "server error"})
+    }
+}
 
 const resetPassword = async (req, res) => {
     const user = req.user;
@@ -100,4 +111,4 @@ const resetPassword = async (req, res) => {
     }
 }
 
-export { register, login, logout, initiateResetPassword, resetPassword }
+export { register, login, logout, initiateResetPassword, resetPassword, totalUser }
