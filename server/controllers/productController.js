@@ -16,7 +16,7 @@ const getTrendingProducts = async (req, res) => {
     try {
         const trendingProducts = await Product.aggregate([
             {
-                $sample: { size: 5 }
+                $sample: { size: 8 }
             }
         ]);
         const populatedProducts = await Product.populate(trendingProducts, { path: 'category', select: '_id name' });
@@ -142,4 +142,15 @@ const deleteProduct = async (req, res) => {
     }
 }
 
-export { getAllProducts, getTrendingProducts, getLastestProducts, addProduct, getProductById, updateProduct, deleteProduct }
+const getProductColours = async (req, res) => {
+    try {
+        const productName = req.params.name;
+        const products = await Product.find({ name: productName }).select("_id color");
+        res.status(200).json(products)
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+export { getAllProducts, getTrendingProducts, getLastestProducts, addProduct, getProductById, updateProduct, deleteProduct, getProductColours }
