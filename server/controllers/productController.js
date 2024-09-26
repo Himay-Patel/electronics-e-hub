@@ -145,7 +145,7 @@ const deleteProduct = async (req, res) => {
 const getProductColours = async (req, res) => {
     try {
         const productName = req.params.name;
-        const products = await Product.find({ name: productName }).select("_id color");
+        const products = await Product.find({ name: { $regex: productName, $options: 'i' } }).select("_id color");
         res.status(200).json(products)
     } catch (err) {
         console.log(err);
