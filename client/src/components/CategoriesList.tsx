@@ -116,7 +116,7 @@ const CategoriesList = () => {
                                     <img
                                         src={category.imageUrl}
                                         alt={category.name}
-                                        className={`size-16 md:size-20 lg:size-24 rounded-full cursor-pointer transition-transform transform hover:scale-105 ${selectedCategory === category.name ? "p-2 ring-2 ring-e_hub_black" : ""}`}
+                                        className={`size-20 md:size-24 lg:size-26 xl:size-32 rounded-full cursor-pointer transition-transform transform hover:scale-105 ${selectedCategory === category.name ? "p-2 ring-2 ring-e_hub_black" : ""}`}
                                     />
                                     <p className="mt-2 text-sm md:text-base font-medium">{category.name}</p>
                                 </div>

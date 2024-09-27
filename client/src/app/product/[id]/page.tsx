@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { increaseQuantityOrAdd } from '@/lib/redux/features/cartSlice';
 import { setTrendingProducts } from '@/lib/redux/features/trendingproductSlice';
+import Widgets from '@/components/Widgets';
 
 interface UniqueColorProducts {
     _id: string,
@@ -75,7 +76,7 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
     if (!product) return <div className="text-center py-20">Product not found</div>;
 
     return (
-        <>
+        <div className='flex flex-col gap-20'>
             <div className="mt-3 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64 relative flex flex-col lg:flex-row gap-16">
                 {/* Left side - Product Images */}
                 <div className="w-full mt-16 lg:w-1/2 lg:sticky top-20 h-max">
@@ -114,8 +115,11 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
                     <Add productId={product._id} />
                 </div>
             </div>
-            <div className="mt-20 px-4 md:px-8 lg:px-16 xl:px-32 relative">
-                <p className='text-center font-medium text-4xl'>Related Products</p>
+            <div className="">
+                <Widgets />
+            </div>
+            <div className="px-4 md:px-8 lg:px-16 xl:px-32 relative">
+                <p className='text-center font-medium text-4xl underline'>Related Products</p>
                 <div className='mt-12 overflow-x-auto items-center justify-center'>
                     <div className='flex gap-x-14 gap-y-16 justify-between flex-nowrap sm:flex-wrap p-3'>
                         {relatedProducts.map(product => (
@@ -166,7 +170,7 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
