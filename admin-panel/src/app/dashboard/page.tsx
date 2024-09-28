@@ -24,18 +24,30 @@ const DashboardPage = () => {
                 const customerresponse = await axios.get(`${process.env.API_URL}/api/user/totaluser`);
                 const totalsalesresponse = await axios.get(`${process.env.API_URL}/api/order/totalsales`);
                 const salestaticresponse = await axios.get(`${process.env.API_URL}/api/order/salestatic`);
+                const totalproductresponse = await axios.get(`${process.env.API_URL}/api/order/totalproductsale`);
 
                 const totalorder = orderresponse.data;
                 const totaluser = customerresponse.data.countUser;
                 const totalamount = totalsalesresponse.data.totalsale;
                 const salestatic = salestaticresponse.data;
+                const totalproduct = totalproductresponse.data;
+                /* {item.orderItems.productId.category.name: } */
+                const temp = totalproduct.reduce((acc:any, order:any) => {
+                    order.orderItems.forEach((item:any) => {
+                      const categoryName = item.productId.category.name;
+                      acc[categoryName] = (acc[categoryName] || 0) + item.quantity;
+                    });
+                    return acc;
+                  }, {});
+                
+                
                 
                 setTotalOrders(totalorder.length);
                 setTotalCustomer(totaluser);
                 setTotalSales(totalamount);
                 const labels =  salestatic.map((item: { _id: { year: any; month: any; }; }) => `${item._id.year}-${item._id.month}`);
                 const salesDataPoints =  salestatic.map((item: { totalSales: any; }) => item.totalSales);
-                const revenueDataPoints = labels.map(() => Math.floor(Math.random() * 5000));
+                const revenueDataPoints = salestatic.map((item: { totalSales: any; }) => ((item.totalSales*30)/100));
                 const profitDataPoints = [500, 300, 200, 400, 600, 150, 350, 250]; // Example static data for pie chart
     
                 setLineData({
@@ -66,11 +78,11 @@ const DashboardPage = () => {
                 });
     
                 setPieData({
-                    labels: ['Mobile Phones', 'Watches', 'Headphones', 'Laptops', 'Cameras', 'Air Conditioners', 'Refrigerators', 'Home Theater'],
+                    labels: Object.keys(temp),
                     datasets: [
                         {
                             label: 'Products',
-                            data: profitDataPoints,
+                            data: Object.values(temp),
                             backgroundColor: ['#F59E0B', '#10B981', '#3B82F6', '#EF4444', '#6366F1', '#F97316', '#34D399', '#8B5CF6'],
                         }
                     ]

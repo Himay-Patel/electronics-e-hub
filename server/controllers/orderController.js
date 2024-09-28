@@ -23,6 +23,23 @@ const totalSales = async (req,res)=> {
         res.status(500).send("server error")
     }
 }
+const totalProductsale = async(req,res) => {
+    try {
+        const orders = await Order.find().select("_id orderItems").populate({
+            path: "orderItems.productId",
+            select: '_id category',
+            populate: {
+                path: "category",
+                select: "_id name"
+            }
+        });
+
+        res.status(200).json(orders);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Server Error');
+    }
+}
 const salestat = async(req,res) => {
     try {
         const salestatic = await Order.aggregate([
@@ -68,4 +85,4 @@ const generateOrder = async (req, res) => {
     }
 }
 
-export { allOrders, generateOrder, totalSales, salestat }
+export { allOrders, generateOrder, totalSales, salestat, totalProductsale }
