@@ -52,8 +52,9 @@ export const cartSlice = createSlice({
             } else {
                 state.items.push(product);
             }
-            state.totalItems += 1;
-            state.total += product.price;
+            state.totalItems += product.quantity;
+            const subtotal = product.price * product.quantity;
+            state.total += subtotal;
         },
         decreaseQuantityOrDelete(state, action: PayloadAction<Product>) {
             const product = action.payload;
@@ -64,8 +65,9 @@ export const cartSlice = createSlice({
                 } else {
                     existingProduct.quantity--;
                 }
-                state.totalItems -= 1;
-                state.total -= product.price;
+                state.totalItems -= product.quantity;
+                const subtotal = product.price * product.quantity;
+                state.total -= subtotal;
             }
         },
         remove(state, action: PayloadAction<Product>) {

@@ -6,7 +6,7 @@ import Add from '@/components/Add';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import Link from 'next/link';
 import Image from 'next/image';
-import { increaseQuantityOrAdd } from '@/lib/redux/features/cartSlice';
+import { decreaseQuantityOrDelete, increaseQuantityOrAdd } from '@/lib/redux/features/cartSlice';
 import { setTrendingProducts } from '@/lib/redux/features/trendingproductSlice';
 import Widgets from '@/components/Widgets';
 
@@ -24,8 +24,10 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
     const [error, setError] = useState<string | null>(null);
     const dispath = useAppDispatch();
     const cart = useAppSelector(state => state.cart);
+    const quantityInCart = useAppSelector(state => state.cart.items).find(item => item._id === id)?.quantity || 0;
     const user = useAppSelector(state => state.user);
     const relatedProducts = useAppSelector(state => state.trendinproducts.trendingproducts);
+    const [stock, setStock] = useState<number | null>(null);
 
     useEffect(() => {
         sessionStorage.setItem('cart', JSON.stringify(cart));
@@ -59,6 +61,7 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
                 const relatedProducts = await axios.get(process.env.API_URL + "/api/product/trending");
                 dispatch(setTrendingProducts(relatedProducts.data));
                 setProduct(response.data);
+                setStock(response.data.quantityAvailable);
                 setDifferentColorProduct(colorResponse.data);
             } catch (err) {
                 setError("Product not found.");
@@ -67,7 +70,6 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
                 setLoading(false);
             }
         };
-
         fetchProduct();
     }, []);
 
@@ -112,7 +114,70 @@ const ProductDetails = ({ params }: { params: { id: string } }) => {
                             ))}
                         </ul>
                     </div>
-                    <Add productId={product._id} />
+                    {/* <Add productId={product._id} /> */}
+                    <div className='flex flex-col gap-4'>
+                        <h4 className='font-medium'>Choose a Quantity</h4>
+                        <div className="flex justify-between">
+                            <div className="flex items-center gap-4">
+                                <div className="bg-e_hub_orange py-2 px-4 text-e_hub_white rounded-3xl flex items-center justify-between w-32">
+                                    <button className='cursor-pointer text-xl disabled:cursor-not-allowed' disabled={quantityInCart === 0} onClick={(e) => {
+                                        e.preventDefault();
+                                        dispatch(decreaseQuantityOrDelete({
+                                            _id: product._id,
+                                            name: product.name,
+                                            price: product.price as number,
+                                            description: product.description,
+                                            images: product.images,
+                                            category: product.category,
+                                            company: product.company,
+                                            color: product.color,
+                                            quantity: 1
+                                        }));
+                                    }}>-</button>
+                                    {quantityInCart}
+                                    <button className='cursor-pointer text-xl disabled:cursor-not-allowed' disabled={quantityInCart === stock} onClick={(e) => {
+                                        e.preventDefault();
+                                        dispatch(increaseQuantityOrAdd({
+                                            _id: product._id,
+                                            name: product.name,
+                                            price: product.price as number,
+                                            description: product.description,
+                                            images: product.images,
+                                            category: product.category,
+                                            company: product.company,
+                                            color: product.color,
+                                            quantity: 1
+                                        }));
+                                    }}>+</button>
+                                </div>
+                                {stock !== null && stock <= 10 && (
+                                    <div className="text-xs">
+                                        Only <span className='text-e_hub_orange'>{stock} items</span> left!<br />{"Don't"}{" "} miss it
+                                    </div>
+                                )}
+                            </div>
+                            <button
+                                className='w-36 text-sm font-bold rounded-md ring-2 ring-e_hub_orange text-e_hub_orange hover:bg-e_hub_orange hover:text-e_hub_white py-2 px-4 disabled:cursor-not-allowed disabled:bg-red-200 disabled:text-e_hub_black disabled:ring-none'
+                                disabled={stock === null || stock <= quantityInCart}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    dispatch(increaseQuantityOrAdd({
+                                        _id: product._id,
+                                        name: product.name,
+                                        price: product.price as number,
+                                        description: product.description,
+                                        images: product.images,
+                                        category: product.category,
+                                        company: product.company,
+                                        color: product.color,
+                                        quantity: 1
+                                    }));
+                                }}
+                            >
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div className="">

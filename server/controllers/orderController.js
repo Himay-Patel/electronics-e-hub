@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import Order from '../models/orderModels.js';
+import Product from '../models/productModel.js';
 
 const allOrders = async (req, res) => {
     try {
@@ -77,6 +78,11 @@ const generateOrder = async (req, res) => {
             totalAmount,
             address: new mongoose.Types.ObjectId(address),
             paymentMethod
+        });
+        orderItems.forEach(item => {
+            Product.updateOne({ _id: new mongoose.Types.ObjectId(item.productId)}, { $inc: { quantityAvailable: -item.quantity }})
+            .then(res => {})
+            .catch(err => {console.log(err)});
         });
         res.status(201).json(order);
     } catch(err) {
