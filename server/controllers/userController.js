@@ -2,10 +2,15 @@ import User from '../models/userModel.js';
 import generateJwtToken from '../utils/generateJwtToken.js';
 import cookieOptions from '../utils/cookieOptions.js';
 import mongoose from 'mongoose';
+import { validateEmail } from '../utils/emailValidator.js';
 
 const register = async (req, res) => {
     const { firstname, lastname, email, password } = req.body;
     try {
+        const isEmailValid = await validateEmail(email);
+        if(!isEmailValid) {
+            return res.status(400).json({ message: 'Invalid email' });
+        }
         const user = await User.findOne({ email });
         if (user) {
             return res.status(400).json({ message: "User already exists" });
