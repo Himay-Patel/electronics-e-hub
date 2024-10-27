@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import axios from 'axios';
@@ -10,20 +11,10 @@ interface User {
     _id: string;
     username: string;
     email: string;
-    profilePic: string;
+    imageUrl: string;
     createdAt: string;
     updatedAt: string;
 }
-
-const fetchUsers = async (): Promise<User[]> => {
-    try {
-        const response = await axios.get(process.env.API_URL + '/users');
-        return response.data.users;
-    } catch (error) {
-        console.error('Failed to fetch users:', error);
-        return [];
-    }
-};
 
 const Users = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -31,23 +22,27 @@ const Users = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const getUsers = async () => {
-            const usersData = await fetchUsers();
-            setUsers(usersData);
-            setLoading(false);
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get(process.env.API_URL + '/api/user');
+                setUsers(response.data);
+            } catch (error) {
+                setError('Failed to fetch users. Please try again later.');
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
         };
-
-        getUsers();
-    }, []);
+        fetchUsers();
+    })
 
     const handleDelete = async (_id: string) => {
         const confirmDelete = window.confirm("Are you sure you want to delete this user?");
-
         if (confirmDelete) {
             try {
-                await axios.post(process.env.API_URL + '/removeuser', { _id });
+                await axios.post(process.env.API_URL + '/api/user/delete', { _id });
                 setUsers(users.filter(user => user._id !== _id));
-                toast.error('User deleted successfully');
+                toast.success('User deleted successfully');
             } catch (error) {
                 setError('Failed to delete user. Please try again later.');
             }
@@ -85,8 +80,8 @@ const Users = () => {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.username}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {user.profilePic ? (
-                                            <img src={user.profilePic} alt="Profile" className="w-10 h-10 rounded-full object-cover" />
+                                        {user.imageUrl ? (
+                                            <img src={user.imageUrl} alt="Profile" className="w-10 h-10 rounded-full object-cover" />
                                         ) : (
                                             'No Image'
                                         )}
@@ -96,9 +91,9 @@ const Users = () => {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
                                         <button
                                             onClick={() => handleDelete(user._id)}
-                                            className="flex items-center text-red-600 hover:text-red-900">
+                                            className="flex items-center justify-center text-red-600 hover:text-red-900 bg-slate-300 p-2 rounded-lg">
                                             <TrashIcon className="w-5 h-5" />
-                                            Delete
+                                            <p>Delete</p>
                                         </button>
                                     </td>
                                 </tr>

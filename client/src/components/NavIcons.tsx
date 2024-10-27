@@ -87,7 +87,7 @@ const NavIcons = () => {
             {
                 isProfileOpen && (
                     <div ref={profileDropdownRef} className='absolute p-4 rounded-md top-12 right-14 gap-5 text-lg shadow-[0_3px_10px_rgb(0,0,0,0.4)] bg-e_hub_gray z-20 flex flex-col justify-between items-center'>
-                        <Link href={(user._id && user.email && user.username) ? '/' : '/login'}>{user._id && user.email && user.username ? user.username : "Login"}</Link>
+                        <Link href={(user._id && user.email && user.username) ? '/profile' : '/login'}>{user._id && user.email && user.username ? user.username : "Login"}</Link>
                         { (user._id && user.email && user.username) && <Link href="#profile">My Orders</Link>}
                         { (user._id && user.email && user.username) && <Link href="#profile">cancellection</Link>}
                         {(user._id && user.email && user.username) && <button onClick={handleLogout}>Logout</button>}
