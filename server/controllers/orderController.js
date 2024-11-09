@@ -5,14 +5,43 @@ import Product from '../models/productModel.js';
 const allOrders = async (req, res) => {
     try {
         const orders = await Order.find()
-        .select("_id userId totalAmount orderItems")
+        .select("_id userId totalAmount orderItems address createdAt")
         .populate({
             path: "orderItems.productId",
-            select: "-createdAt -quantityAvailable -updatedAt -__v"
+            select: "-quantityAvailable -updatedAt -__v"
+        }).populate({
+            path: "userId", 
+            select: "username" 
+        }).populate({
+            path: "address",
+            select: "street city state zipCode"
         });
         res.status(200).json(orders);
     } catch (err) {
-        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+}
+const orderdetail = async (req,res)=> {
+    try {
+        
+
+         // Find the order by ID
+         const order = await Order.findById(req.params._id)
+         .populate('orderItems.productId').
+         populate({
+            path: "orderItems.productId",
+            populate:{
+                path:"category",
+                select:"name"
+            }
+         }); 
+ 
+         if (!order) {
+             return res.status(500).json({ message: 'Order not found' });
+         }
+         res.status(200).json(order);
+        
+    } catch (error) {
         res.status(500).send('Server Error');
     }
 }
@@ -91,4 +120,4 @@ const generateOrder = async (req, res) => {
     }
 }
 
-export { allOrders, generateOrder, totalSales, salestat, totalProductsale }
+export { allOrders, generateOrder, totalSales, salestat, totalProductsale, orderdetail }
