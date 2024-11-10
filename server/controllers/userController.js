@@ -3,7 +3,7 @@ import generateJwtToken from '../utils/generateJwtToken.js';
 import cookieOptions from '../utils/cookieOptions.js';
 import mongoose from 'mongoose';
 import { validateEmail } from '../utils/emailValidator.js';
-import fs from 'fs';
+import fs from 'node:fs';
 import path from "path";
 
 const getAllUsers = async (req, res) => {
@@ -23,6 +23,8 @@ const deleteUser = async (req, res) => {
         if (!user) {
             res.status(404).json({ message: "User not found" });
         } else {
+            const oldImage = user.imageUrl.split(process.env.DOMAIN_NAME)[1];
+            fs.unlinkSync('./public' + oldImage);
             res.status(200).json({
                 message: "User deleted successfully",
             });

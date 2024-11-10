@@ -60,6 +60,7 @@ const OrderDetailPage = () => {
         </ul>
         <h3>Total Amount: ${order.totalAmount}</h3>
         <h3>Payment Method: {order.paymentMethod}</h3>
+        <h3>Status: {order.status}</h3>
         <h3>Created At: {new Date(order.createdAt).toLocaleString()}</h3>
       </div>
     </Layout>

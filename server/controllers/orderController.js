@@ -5,55 +5,92 @@ import Product from '../models/productModel.js';
 const allOrders = async (req, res) => {
     try {
         const orders = await Order.find()
-        .select("_id userId totalAmount orderItems address createdAt")
-        .populate({
-            path: "orderItems.productId",
-            select: "-quantityAvailable -updatedAt -__v"
-        }).populate({
-            path: "userId", 
-            select: "username" 
-        }).populate({
-            path: "address",
-            select: "street city state zipCode"
-        });
+            .select("_id userId totalAmount orderItems address status createdAt")
+            .populate({
+                path: "orderItems.productId",
+                select: "-quantityAvailable -updatedAt -__v"
+            }).populate({
+                path: "userId",
+                select: "username"
+            }).populate({
+                path: "address",
+                select: "street city state zipCode"
+            });
         res.status(200).json(orders);
     } catch (err) {
         res.status(500).send('Server Error');
     }
 }
-const orderdetail = async (req,res)=> {
-    try {
-        
 
-         // Find the order by ID
-         const order = await Order.findById(req.params._id)
-         .populate('orderItems.productId').
-         populate({
-            path: "orderItems.productId",
-            populate:{
-                path:"category",
-                select:"name"
-            }
-         }); 
- 
-         if (!order) {
-             return res.status(500).json({ message: 'Order not found' });
-         }
-         res.status(200).json(order);
-        
+const orderdetail = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params._id)
+            .populate('orderItems.productId').
+            populate({
+                path: "orderItems.productId",
+                populate: {
+                    path: "category",
+                    select: "name"
+                }
+            });
+
+        if (!order) {
+            return res.status(500).json({ message: 'Order not found' });
+        }
+        res.status(200).json(order);
+
     } catch (error) {
         res.status(500).send('Server Error');
     }
 }
-const totalSales = async (req,res)=> {
+
+const getOrderById = async (req, res) => {
     try {
-        const totalSale = await Order.aggregate([{$group : { _id: null, totalSales: { $sum: '$totalAmount' }}}])
-        return res.status(200).json({totalsale : totalSale[0].totalSales})
+        const order = await Order.findById(req.params._id)
+        if (!order) {
+            res.status(404).json({ message: "Order not found" });
+        } else {
+            res.status(200).json(order);
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+const updateStatus = async (req, res) => {
+    try {
+        const { _id, status } = req.body;
+        const orderstatus = await Order.findOne({ _id: new mongoose.Types.ObjectId(_id) });
+
+        if (!orderstatus) {
+            res.status(404).json({ message: "Order not found" });
+        } else {
+            orderstatus.status = status;
+
+            await orderstatus.save();
+        }
+        res.status(201).json({
+            message: "OrderStatus updated successfully",
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Failed to update product",
+        });
+        console.error(err);
+    }
+}
+
+const totalSales = async (req, res) => {
+    try {
+        const totalSale = await Order.aggregate([{ $group: { _id: null, totalSales: { $sum: '$totalAmount' } } }])
+        return res.status(200).json({ totalsale: totalSale[0].totalSales })
     } catch (error) {
         res.status(500).send("server error")
     }
 }
-const totalProductsale = async(req,res) => {
+
+const totalProductsale = async (req, res) => {
     try {
         const orders = await Order.find().select("_id orderItems").populate({
             path: "orderItems.productId",
@@ -70,22 +107,25 @@ const totalProductsale = async(req,res) => {
         res.status(500).send('Server Error');
     }
 }
-const salestat = async(req,res) => {
+
+const salestat = async (req, res) => {
     try {
         const salestatic = await Order.aggregate([
             {
                 $group: {
-                  _id: { year: { $year: "$createdAt" },
-                  month: { $month: "$createdAt" } },
-                  totalSales: { $sum: "$totalAmount" },
+                    _id: {
+                        year: { $year: "$createdAt" },
+                        month: { $month: "$createdAt" }
+                    },
+                    totalSales: { $sum: "$totalAmount" },
                 },
-              },
-              {
+            },
+            {
                 $sort: { "_id.year": -1, "_id.month": -1 }
-              },
-              {
+            },
+            {
                 $limit: 12
-              }
+            }
         ])
         return res.status(200).json(salestatic);
     } catch (error) {
@@ -109,15 +149,15 @@ const generateOrder = async (req, res) => {
             paymentMethod
         });
         orderItems.forEach(item => {
-            Product.updateOne({ _id: new mongoose.Types.ObjectId(item.productId)}, { $inc: { quantityAvailable: -item.quantity }})
-            .then(res => {})
-            .catch(err => {console.log(err)});
+            Product.updateOne({ _id: new mongoose.Types.ObjectId(item.productId) }, { $inc: { quantityAvailable: -item.quantity } })
+                .then(res => { })
+                .catch(err => { console.log(err) });
         });
         res.status(201).json(order);
-    } catch(err) {
+    } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
 }
 
-export { allOrders, generateOrder, totalSales, salestat, totalProductsale, orderdetail }
+export { allOrders, generateOrder, totalSales, salestat, totalProductsale, orderdetail, getOrderById, updateStatus }

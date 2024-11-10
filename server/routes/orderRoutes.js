@@ -1,5 +1,5 @@
 import express from 'express';
-import { allOrders, generateOrder, totalSales, salestat, totalProductsale, orderdetail } from '../controllers/orderController.js';
+import { allOrders, generateOrder, totalSales, salestat, totalProductsale, orderdetail, getOrderById, updateStatus } from '../controllers/orderController.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -10,5 +10,7 @@ router.route('/totalsales').get(totalSales);
 router.route('/salestatic').get(salestat);
 router.route('/totalproductsale').get(totalProductsale);
 router.route('/orderdetail/:_id').get(orderdetail);
+router.route('/:_id').get(getOrderById);
+router.route('/updatestatus').post(updateStatus);
 
 export default router;
