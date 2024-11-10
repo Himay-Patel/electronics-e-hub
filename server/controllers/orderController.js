@@ -60,7 +60,8 @@ const getOrderById = async (req, res) => {
 
 const updateStatus = async (req, res) => {
     try {
-        const { _id, status } = req.body;
+        const _id = req.params._id;
+        const { status } = req.body;
         const orderstatus = await Order.findOne({ _id: new mongoose.Types.ObjectId(_id) });
 
         if (!orderstatus) {

@@ -12,7 +12,7 @@ const OrderDetailPage = () => {
   
   const params = useParams(); // Get the parameters
   const id = params.id as string; // Cast to string if you are sure it is defined
-  const [order, setOrder] = useState<Order | null>(null);
+  const [order, setOrder] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const OrderDetailPage = () => {
         
         <h3>Order Items:</h3>
         <ul>
-          {order.orderItems.map((item: { productId: { name: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; price: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; category: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; company: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; color: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }; quantity: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }, index: React.Key | null | undefined) => (
+          {order.orderItems.map((item: { productId: { name: string; price: any; category: string | any; company: string | any; color: string | any; }; quantity: string | any; }, index: React.Key | null | undefined) => (
             <li key={index} className="mb-4">
               <strong>Product Name:</strong> {item.productId.name} <br />
               <strong>Price:</strong> ${item.productId.price} <br />

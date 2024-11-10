@@ -11,6 +11,6 @@ router.route('/salestatic').get(salestat);
 router.route('/totalproductsale').get(totalProductsale);
 router.route('/orderdetail/:_id').get(orderdetail);
 router.route('/:_id').get(getOrderById);
-router.route('/updatestatus').post(updateStatus);
+router.route('/updatestatus/:_id').post(updateStatus);
 
 export default router;
