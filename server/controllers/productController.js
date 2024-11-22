@@ -4,7 +4,7 @@ import fs from 'node:fs';
 
 const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find({}, '-__v -createdAt -updatedAt').populate({ path: 'category', select: "_id name" });
+        const products = await Product.find({}, '-__v -updatedAt').populate({ path: 'category', select: "_id name" });
         res.status(200).json(products);
     } catch (err) {
         console.log(err);

@@ -16,8 +16,18 @@ interface User {
     updatedAt: string;
 }
 
+interface Address {
+    _id: string;
+    name: string;
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+}
+
 const Users = () => {
     const [users, setUsers] = useState<User[]>([]);
+    const [addresses, setAddresses] = useState<Record<string, Address[]>>({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -34,7 +44,19 @@ const Users = () => {
             }
         };
         fetchUsers();
-    })
+    }, []);
+
+    const fetchAddresses = async (userId: string) => {
+        try {
+            const response = await axios.get(`${process.env.API_URL}/api/address/user=${userId}`);
+            setAddresses((prev) => ({ ...prev, [userId]: response.data }));
+        } catch (error) {
+            setError('Address not found.  Please try again later.');
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const handleDelete = async (_id: string) => {
         const confirmDelete = window.confirm("Are you sure you want to delete this user?");
@@ -67,6 +89,7 @@ const Users = () => {
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 capitalize tracking-wider">Sr No.</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 capitalize tracking-wider">Username</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 capitalize tracking-wider">Email</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 capitalize tracking-wider">Addresses</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 capitalize tracking-wider">Profile Pic</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 capitalize tracking-wider">Created At</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 capitalize tracking-wider">Updated At</th>
@@ -79,6 +102,22 @@ const Users = () => {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{index + 1}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.username}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <button onClick={() => fetchAddresses(user._id)} className="flex items-center justify-center text-blue-600 hover:text-blue-900 bg-slate-300 p-2 rounded-lg">
+                                            Show All Addresses
+                                        </button>
+                                        {addresses[user._id] && (
+                                            <ul className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">
+                                                {addresses[user._id].map((address, index) => (
+                                                    <li key={address._id}>
+                                                        <span className='font-bold'>Address {index + 1} : </span>
+                                                        {address.street}, {address.city}, {address.state} -{" "}
+                                                        {address.zipCode}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {user.imageUrl ? (
                                             <img src={user.imageUrl} alt="Profile" className="w-10 h-10 rounded-full object-cover" />

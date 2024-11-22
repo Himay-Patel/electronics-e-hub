@@ -6,8 +6,6 @@ import axios from 'axios';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-
-
 const OrderDetailPage = () => {
   
   const params = useParams(); // Get the parameters
@@ -36,8 +34,7 @@ const OrderDetailPage = () => {
   }
 
   if (!order) {
-    return <div>No order found.</div>;
-    
+    return <div>No order found.</div>   
   }
 
   return (
@@ -50,7 +47,7 @@ const OrderDetailPage = () => {
           {order.orderItems.map((item: { productId: { name: string; price: any; category: string | any; company: string | any; color: string | any; }; quantity: string | any; }, index: React.Key | null | undefined) => (
             <li key={index} className="mb-4">
               <strong>Product Name:</strong> {item.productId.name} <br />
-              <strong>Price:</strong> ${item.productId.price} <br />
+              <strong>Price:</strong> ₹ {item.productId.price} <br />
               <strong>Category:</strong> {item.productId.category.name} <br />
               <strong>Company:</strong> {item.productId.company} <br />
               <strong>Color:</strong> {item.productId.color} <br />

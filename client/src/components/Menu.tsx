@@ -60,7 +60,7 @@ const Menu = () => {
                         <Link href="#search" onClick={handleLinkClick}>Search</Link>
                         <Link href="/about" onClick={handleLinkClick}>About</Link>
                         <Link href="/contact" onClick={handleLinkClick}>Contact</Link>
-                        <Link href="#profile" onClick={handleLinkClick}>{user._id && user.email && user.username ? user.username : "Profile"}</Link>
+                        <Link href="/profile" onClick={handleLinkClick}>{user._id && user.email && user.username ? user.username : "Profile"}</Link>
                         <Link href="/cart" onClick={handleLinkClick}>Cart</Link>
                         <button onClick={handleLogout}>Logout</button>
                     </div>

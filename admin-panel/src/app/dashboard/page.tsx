@@ -163,7 +163,7 @@ const DashboardPage = () => {
                     {/* Pie Chart for Profit */}
                     <div className="p-6 bg-gray-100 rounded-lg flex-1 min-w-[300px]">
                         <div className="bg-white p-6 rounded-lg shadow-md">
-                            <h1 className="text-2xl font-bold mb-6">Products Statistics</h1>
+                            <h1 className="text-2xl font-bold mb-6">Orders Statistics</h1>
                             <div className="mb-6">
                                 <Pie data={pieData} options={chartOptions} />
                             </div>

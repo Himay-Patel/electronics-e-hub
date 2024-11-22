@@ -118,6 +118,7 @@ const EditProfile = () => {
                             type="email"
                             name="email"
                             id="email"
+                            disabled
                             value={user.email}
                             onChange={handleChange}
                             required
@@ -149,14 +150,14 @@ const EditProfile = () => {
                         </button>
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    {/* <div className="flex items-center justify-between">
                         <button
                             disabled={loading}
                             className="w-full bg-e_hub_black text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2"
                         >
                             Change Password
                         </button>
-                    </div>
+                    </div> */}
 
                     <div className="flex items-center justify-end">
                         <Link href="/profile" className="mt-4 text-blue-500 hover:underline">

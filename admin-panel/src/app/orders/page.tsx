@@ -110,7 +110,7 @@ const AllOrdersPage = () => {
                   <td className="px-6 py-4 whitespace-pre-wrap text-sm text-gray-500">{order.address ? `${order.address.street}, ${order.address.city}, ${order.address.state} ${order.address.zipCode}` : 'No Address'}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.createdAt ? new Date(order.createdAt).toLocaleDateString() : 'No Date'}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.orderItems.length}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.totalAmount}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹ {order.totalAmount}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <span className={`px-5 py-2 text-white rounded-full 
                                             ${order.status === 'confirm order' ? 'bg-[#369236]' :
