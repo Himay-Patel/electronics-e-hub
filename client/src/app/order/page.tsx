@@ -86,8 +86,8 @@ const OrderHistory = () => {
                                                         rowSpan={order.orderItems.length}
                                                         className="py-2 px-4 border-b text-center align-middle"
                                                     >
-                                                        <span className={order.status === "cancel order" ? "text-red-500" : "text-green-500"}>
-                                                            {order.status === "cancel order" ? "cancel order" : order.status}
+                                                        <span className={order.status === "canceled" ? "text-red-500" : "text-green-500"}>
+                                                            {order.status === "canceled" ? "canceled" : order.status}
                                                         </span>
                                                     </td>
                                                 </>

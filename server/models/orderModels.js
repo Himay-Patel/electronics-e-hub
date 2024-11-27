@@ -32,7 +32,7 @@ const orderSchema = mongoose.Schema({
     },
     status: {
         type: String,
-        default: "confirm order"
+        default: "confirmed"
     }
 }, {
     timestamps: true

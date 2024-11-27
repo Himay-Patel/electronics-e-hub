@@ -87,13 +87,13 @@ const OrderDetailPage = () => {
                         </div>
                         <div className="mt-4 flex justify-between items-center">
                             <p className="text-xl font-bold text-gray-900">Total Amount: ₹{order.totalAmount}</p>
-                            <div>
+                            {/* <div>
                                 {order.status !== "cancel order" ? (
                                     <button className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none">Track Order</button>
                                 ) : (
                                     <p></p>
                                 )}
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 

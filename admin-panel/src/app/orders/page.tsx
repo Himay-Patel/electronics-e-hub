@@ -113,10 +113,10 @@ const AllOrdersPage = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹ {order.totalAmount}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <span className={`px-5 py-2 text-white rounded-full 
-                                            ${order.status === 'confirm order' ? 'bg-[#369236]' :
-                        order.status === 'cancel order' ? 'bg-[#f02929]' :
-                          order.status === 'dispatch order' ? 'bg-[#4141ff]' :
-                            order.status === 'delivered order' ? 'bg-gray-500' :
+                                            ${order.status === 'confirmed' ? 'bg-[#369236]' :
+                        order.status === 'canceled' ? 'bg-[#f02929]' :
+                          order.status === 'dispatched' ? 'bg-[#4141ff]' :
+                            order.status === 'delivered' ? 'bg-gray-500' :
                               'bg-[#025720]'
                       }`}>
                       {order.status}
@@ -125,13 +125,13 @@ const AllOrdersPage = () => {
                   <td>
                     <select
                       value={order.status}
-                      disabled={order.status === "cancel order" || order.status === "delivered order"}
+                      disabled={order.status === "canceled" || order.status === "delivered"}
                       onChange={(e) => handleStatusChange(order._id, e.target.value)}
                       className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg disabled:cursor-not-allowed">
-                      <option value="confirm order">Confirm Order</option>
-                      <option value="cancel order">Cancel Order</option>
-                      <option value="dispatch order">Dispatch Order</option>
-                      <option value="delivered order">Delivered Order</option>
+                      <option value="confirmed">Confirm Order</option>
+                      <option value="canceled">Cancel Order</option>
+                      <option value="dispatched">Dispatch Order</option>
+                      <option value="delivered">Delivered Order</option>
                     </select>
                   </td>
                   <td>

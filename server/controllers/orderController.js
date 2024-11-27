@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Order from '../models/orderModels.js';
 import Product from '../models/productModel.js';
+import { sendOrdersMail } from '../utils/ordersMail.js';
 
 const allOrders = async (req, res) => {
     try {
@@ -68,8 +69,8 @@ const updateStatus = async (req, res) => {
             res.status(404).json({ message: "Order not found" });
         } else {
             orderstatus.status = status;
-
             await orderstatus.save();
+            sendOrdersMail(orderstatus._id);
         }
         res.status(201).json({
             message: "OrderStatus updated successfully",
@@ -92,9 +93,9 @@ const cancelOrderStatus = async (req, res) => {
             return res.status(404).json({ message: "Order not found" });
         }
 
-        order.status = "cancel order";
+        order.status = "canceled";
         await order.save();
-
+        await sendOrdersMail(order._id);
         return res.status(200).json({
             message: "Order status updated successfully",
             order,
@@ -179,6 +180,7 @@ const generateOrder = async (req, res) => {
                 .then(res => { })
                 .catch(err => { console.log(err) });
         });
+        await sendOrdersMail(order._id);
         res.status(201).json(order);
     } catch (err) {
         console.error(err.message);
