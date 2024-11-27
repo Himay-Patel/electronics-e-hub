@@ -82,6 +82,31 @@ const updateStatus = async (req, res) => {
     }
 }
 
+const cancelOrderStatus = async (req, res) => {
+    try {
+        const { orderId } = req.body;
+
+        const order = await Order.findOne({ _id: orderId });
+
+        if (!order) {
+            return res.status(404).json({ message: "Order not found" });
+        }
+
+        order.status = "cancel order";
+        await order.save();
+
+        return res.status(200).json({
+            message: "Order status updated successfully",
+            order,
+        });
+    } catch (err) {
+        console.error("Error updating order status:", err);
+        return res.status(500).json({
+            message: "Failed to update order status",
+        });
+    }
+}
+
 const totalSales = async (req, res) => {
     try {
         const totalSale = await Order.aggregate([{ $group: { _id: null, totalSales: { $sum: '$totalAmount' } } }])
@@ -161,4 +186,4 @@ const generateOrder = async (req, res) => {
     }
 }
 
-export { allOrders, generateOrder, totalSales, salestat, totalProductsale, orderdetail, getOrderById, updateStatus }
+export { allOrders, generateOrder, totalSales, salestat, totalProductsale, orderdetail, getOrderById, updateStatus, cancelOrderStatus }

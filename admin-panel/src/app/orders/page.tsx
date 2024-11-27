@@ -153,28 +153,3 @@ const AllOrdersPage = () => {
 }
 
 export default AllOrdersPage;
-// thsi is my backend logic 
-// const updateStatus = async (req, res) => {
-//     try {
-//         const { _id, status } = req.body;
-//         const orderstatus = await Order.findOne({ _id: new mongoose.Types.ObjectId(_id) });
-
-//         if (!orderstatus) {
-//             res.status(404).json({ message: "Order not found" });
-//         } else {
-//             orderstatus.status = status;
-
-//             await orderstatus.save();
-//         }
-//         res.status(201).json({
-//             message: "OrderStatus updated successfully",
-//         });
-//     } catch (err) {
-//         res.status(500).json({
-//             message: "Failed to update product",
-//         });
-//         console.error(err);
-//     }
-// }
-// and this is my route
-// router.route('/updatestatus').post(updateStatus);

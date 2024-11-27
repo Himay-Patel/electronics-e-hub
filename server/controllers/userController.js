@@ -1,4 +1,5 @@
 import User from '../models/userModel.js';
+import Order from '../models/orderModels.js';
 import generateJwtToken from '../utils/generateJwtToken.js';
 import cookieOptions from '../utils/cookieOptions.js';
 import mongoose from 'mongoose';
@@ -35,19 +36,19 @@ const deleteUser = async (req, res) => {
     }
 }
 
-const getUserById = async (req, res) => {
-    try {
-        const user = await User.findById(req.params._id, '-__v -createdAt -updatedAt');
-        if (!user) {
-            res.status(404).json({ message: "user not found" });
-        } else {
-            res.status(200).json(user);
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Server error" });
-    }
-}
+// const getUserById = async (req, res) => {
+//     try {
+//         const user = await User.findById(req.params._id, '-__v -createdAt -updatedAt');
+//         if (!user) {
+//             res.status(404).json({ message: "user not found" });
+//         } else {
+//             res.status(200).json(user);
+//         }
+//     } catch (err) {
+//         console.log(err);
+//         res.status(500).json({ message: "Server error" });
+//     }
+// }
 
 const register = async (req, res) => {
     const { firstname, lastname, email, password } = req.body;
@@ -200,4 +201,37 @@ const userUpdateProfile = async (req, res) => {
     }
 }
 
-export { getAllUsers, getUserById, deleteUser, register, login, logout, initiateResetPassword, resetPassword, totalUser, userUpdateProfile }
+const getOrderHistory = async (req, res) => {
+    try {
+        const userId = new mongoose.Types.ObjectId(req.user._id);
+
+        const orders = await Order.find({ userId })
+            .populate("orderItems.productId", "name price")
+            .sort({ createdAt: -1 });
+
+        if (!orders || orders.length === 0) {
+            return res.status(404).json({ message: "No orders found for the user" });
+        }
+
+        res.status(200).json({ orders });
+    } catch (error) {
+        console.error("Error fetching order history:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const getOrderById = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params._id).populate('orderItems.productId');
+        if (!order) {
+            res.status(404).json({ message: "Order not found" });
+        } else {
+            res.status(200).json(order);
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+export { getAllUsers, deleteUser, register, login, logout, initiateResetPassword, resetPassword, totalUser, userUpdateProfile, getOrderHistory, getOrderById }

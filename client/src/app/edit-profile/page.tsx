@@ -122,7 +122,7 @@ const EditProfile = () => {
                             value={user.email}
                             onChange={handleChange}
                             required
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1 disabled:cursor-not-allowed block w-full p-2 border text-gray-500 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         />
                     </div>
 
