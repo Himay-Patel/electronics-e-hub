@@ -53,7 +53,7 @@ const OrderHistory = () => {
                                 <th className="py-2 px-4 border-b text-center">Product Name</th>
                                 <th className="py-2 px-4 border-b text-center">Price</th>
                                 <th className="py-2 px-4 border-b text-center">Quantity</th>
-                                <th className="py-2 px-4 border-b text-center">Total Amount</th>
+                                <th className="py-2 px-4 border-b text-center">Total Amount<p>(service charges - 1%)</p></th>
                                 <th className="py-2 px-4 border-b text-center">Status</th>
                                 <th className="py-2 px-4 border-b text-center">Action</th>
                             </tr>

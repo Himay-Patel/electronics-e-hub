@@ -34,7 +34,7 @@ const generateProductTable = (orderItems, totalAmount) => {
                     </tr>
                 `).join('')}
                 <tr>
-                    <td colspan="3" style="border: 1px solid #ddd; padding: 8px; text-align: right;"><strong>Total Amount:</strong></td>
+                    <td colspan="3" style="border: 1px solid #ddd; padding: 8px; text-align: right;"><strong>Total Amount:</strong><p>(service charges - 1%)</p></td>
                     <td style="border: 1px solid #ddd; padding: 8px;"><strong>₹ ${(totalAmount.toFixed(2))}</strong></td>
                 </tr>
             </tbody>
@@ -131,7 +131,7 @@ const generatePDF = (order) => {
         // Draw the total amount at the bottom
         const totalAmount = order.totalAmount;
         doc.fontSize(12).font("Helvetica-Bold")
-            .text("Total Amount", 400, yPosition, { width: 100, align: 'right' })
+            .text("Total Amount(service charges - 1%)", 400, yPosition, { width: 100, align: 'right' })
             .text(`Rs. ${totalAmount.toFixed(2)}`, 500, yPosition, { width: 100, align: 'right' });
 
         // Order Status and Footer

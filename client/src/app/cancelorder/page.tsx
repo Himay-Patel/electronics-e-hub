@@ -18,9 +18,9 @@ const OrderHistory = () => {
                 const response = await axios.get(`${process.env.API_URL}/api/user/order`, {
                     withCredentials: true,
                 });
-                // Filter orders to show only those with status "cancel order"
+                // Filter orders to show only those with status "canceled"
                 const canceledOrders = response.data.orders.filter(
-                    (order: any) => order.status === "cancel order"
+                    (order: any) => order.status === "canceled"
                 );
                 setOrders(canceledOrders);
                 console.log(canceledOrders);
@@ -53,7 +53,7 @@ const OrderHistory = () => {
                                 <th className="py-2 px-4 border-b text-center">Product Name</th>
                                 <th className="py-2 px-4 border-b text-center">Price</th>
                                 <th className="py-2 px-4 border-b text-center">Quantity</th>
-                                <th className="py-2 px-4 border-b text-center">Total Amount</th>
+                                <th className="py-2 px-4 border-b text-center">Total Amount<p>(service charges - 1%)</p></th>
                                 <th className="py-2 px-4 border-b text-center">Status</th>
                             </tr>
                         </thead>

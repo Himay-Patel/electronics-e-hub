@@ -86,7 +86,11 @@ const OrderDetailPage = () => {
                             </div>
                         </div>
                         <div className="mt-4 flex justify-between items-center">
-                            <p className="text-xl font-bold text-gray-900">Total Amount: ₹{order.totalAmount}</p>
+                            <div className="flex gap-7 text-xl font-bold text-gray-900 items-center justify-center">
+                                <p>Total Amount<p>(service charges - 1%):</p></p>
+                                <p>₹{order.totalAmount}</p>
+                            </div>
+                            {/* <p className="text-xl font-bold text-gray-900">Total Amount<p>(service charges - 1%)</p>: ₹{order.totalAmount}</p> */}
                             {/* <div>
                                 {order.status !== "cancel order" ? (
                                     <button className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none">Track Order</button>

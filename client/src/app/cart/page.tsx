@@ -145,7 +145,7 @@ const CartPage = () => {
                                     </dl>
 
                                     <dl className="flex items-center justify-between gap-4">
-                                        <dt className="text-base font-normal text-gray-500">Tax</dt>
+                                        <dt className="text-base font-normal text-gray-500">Service Charges (1%)</dt>
                                         <dd className="text-base font-medium text-gray-900">&#x20b9; {cart.total * 0.01}</dd>
                                     </dl>
                                 </div>
