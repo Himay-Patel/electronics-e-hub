@@ -1,6 +1,7 @@
 import Product from '../models/productModel.js'
 import mongoose from 'mongoose';
 import fs from 'node:fs';
+import Category from '../models/categoryModel.js';
 
 const getAllProducts = async (req, res) => {
     try {
@@ -153,4 +154,31 @@ const getProductColours = async (req, res) => {
     }
 }
 
-export { getAllProducts, getTrendingProducts, getLastestProducts, addProduct, getProductById, updateProduct, deleteProduct, getProductColours }
+const searchByNameOrCategory = async (req, res) => {
+    try {
+        const param = req.params.param;
+        let query = { $or: [] };
+
+        query.$or.push({
+            name: { $regex: param, $options: 'i' }
+        });
+        
+        const categoryIds = await Category.find({
+            name: { $regex: param, $options: 'i' }
+        }).distinct('_id');
+
+        if (categoryIds.length > 0) {
+            query.$or.push({
+                category: { $in: categoryIds }
+            });
+        }
+
+        const products = await Product.find(query, '-__v -updatedAt -createdAt -quantityAvailable').populate({ path: 'category', select: "_id name" });
+        res.status(200).json(products);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+export { getAllProducts, getTrendingProducts, getLastestProducts, addProduct, getProductById, updateProduct, deleteProduct, getProductColours, searchByNameOrCategory }

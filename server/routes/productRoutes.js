@@ -1,5 +1,5 @@
 import express from 'express'
-import { addProduct, getTrendingProducts, getLastestProducts, deleteProduct, getAllProducts, getProductById, updateProduct, getProductColours } from '../controllers/productController.js';
+import { addProduct, getTrendingProducts, getLastestProducts, deleteProduct, getAllProducts, getProductById, updateProduct, getProductColours, searchByNameOrCategory } from '../controllers/productController.js';
 import configStorage from '../config/multer.js';
 
 const router = express.Router();
@@ -12,5 +12,6 @@ router.route('/:_id').get(getProductById);
 router.route('/update').post(configStorage('/image/product').array('images'), updateProduct);
 router.route('/delete').post(deleteProduct);
 router.route('/colors/:name').get(getProductColours);
+router.route('/search/:param').get(searchByNameOrCategory);
 
 export default router
